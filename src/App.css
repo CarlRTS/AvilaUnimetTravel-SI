@@ -1,3 +1,4 @@
+/* App.css */
 /* Reset básico y estilos generales */
 * {
   margin: 0;
@@ -149,67 +150,122 @@ footer {
   margin-top: 2rem;
 }
 
+/* Menú Hamburguesa */
+.hamburger {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 10px;
+  z-index: 1000;
+}
+
+.hamburger-line {
+  display: block;
+  width: 25px;
+  height: 3px;
+  background: #2c3e50;
+  margin: 5px 0;
+  transition: 0.3s;
+}
+
+/* Animación del menú */
+.hamburger.active .hamburger-line:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+
+.hamburger.active .hamburger-line:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger.active .hamburger-line:nth-child(3) {
+  transform: rotate(-45deg) translate(7px, -6px);
+}
+
 /* Media Queries */
 @media (max-width: 768px) {
   nav {
-      flex-direction: column;
-      align-items: stretch;
-      gap: 1rem;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
   }
   
   .logo {
-      margin-right: 0;
-      text-align: center;
+    margin-right: 0;
+    text-align: center;
   }
   
   .search-container {
-      margin: 0;
-      order: 2;
-      width: 100%;
+    order: 2;
+    width: 100%;
+    margin: 0;
+  }
+  
+  .hamburger {
+    display: block;
+    order: 3;
   }
   
   .nav-links {
-      justify-content: center;
-      order: 3;
-      margin-top: 1rem;
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.95);
+    flex-direction: column;
+    padding: 1rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 999;
+  }
+  
+  .nav-links.active {
+    display: flex;
+  }
+  
+  .nav-links li {
+    width: 100%;
+    text-align: center;
+  }
+  
+  .btn {
+    width: 100%;
+    margin: 0.5rem 0;
   }
   
   .benefits-section {
-      flex-direction: column;
-      padding: 2rem;
+    flex-direction: column;
+    padding: 2rem;
   }
 }
 
 @media (max-width: 480px) {
   .btn {
-      width: 100%;
-      text-align: center;
-      padding: 0.8rem;
+    padding: 0.8rem;
   }
   
   .nav-links {
-      flex-direction: column;
-      gap: 0.5rem;
+    padding: 0.5rem;
   }
   
   .about-section, .benefits-section {
-      margin: 1rem;
-      padding: 2rem 1rem;
+    margin: 1rem;
+    padding: 2rem 1rem;
   }
   
   .search-input {
-      padding: 0.6rem 1rem;
+    padding: 0.6rem 1rem;
   }
 }
 
 @media (min-width: 769px) {
   .benefits-section {
-      gap: 3rem;
-      align-items: center;
+    gap: 3rem;
+    align-items: center;
   }
   
   .image-content {
-      margin-top: 0;
+    margin-top: 0;
   }
 }
 

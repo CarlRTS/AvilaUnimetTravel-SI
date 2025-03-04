@@ -1,14 +1,45 @@
 import React from 'react';
+
+import { useState, useEffect } from 'react';
 import './App.css';
 
 function App() {
-  
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Detectar cambios en el tamaño de la pantalla
+  useEffect(() => {
+    const handleResize = () => {
+      const mobile = window.innerWidth <= 768;
+      setIsMobile(mobile);
+      if (!mobile) setIsMenuOpen(false); // Cierra el menú al cambiar a desktop
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   return (
     <div className="app-container">
       <header className="header">
         <nav>
           <h1 className="logo">Ávila Hiking</h1>
-          
+
+          {/* Menú Hamburguesa (solo en móvil) */}
+          {isMobile && (
+            <button 
+              className={`hamburger ${isMenuOpen ? 'active' : ''}`}
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              aria-label="Menú"
+            >
+              <span className="hamburger-line"></span>
+              <span className="hamburger-line"></span>
+              <span className="hamburger-line"></span>
+            </button>
+          )}
+
+          {/* Buscador */}
           <div className="search-container">
             <input 
               type="search" 
@@ -17,8 +48,9 @@ function App() {
             />
             <button type="submit" className="search-btn">🔍</button>
           </div>
-          
-          <ul className="nav-links">
+
+          {/* Botones de navegación */}
+          <ul className={`nav-links ${isMenuOpen ? 'active' : ''}`}>
             <li><a href="#" className="btn">Foro</a></li>
             <li><a href="#" className="btn">Destinos</a></li>
             <li><a href="#" className="btn login-btn">Iniciar sesión</a></li>
@@ -59,8 +91,7 @@ function App() {
         <p>© {new Date().getFullYear()} Ávila - UNIMET</p>
       </footer>
     </div>
-    
-  )
+  );
 }
 
 export default App;
