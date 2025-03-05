@@ -6,6 +6,7 @@ import './App.css';
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [isAboutOpen, setIsAboutOpen] = useState(false); 
 
   // Detectar cambios en el tamaño de la pantalla
   useEffect(() => {
@@ -59,10 +60,25 @@ function App() {
       </header>
 
       <main>
+        {/* Sección "¿Quiénes somos?" */}
         <section className="about-section">
-          <div className="content-container">
-            <h2>¿Quiénes somos?</h2>
-            <p>Un grupo de alumnos de la UNIMET que busca incentivar el senderismo a nivel universitario</p>
+          <div 
+            className="about-image-container"
+            style={{ backgroundImage: "url('/Imagenes/Landingpage.png')" }} 
+          >
+            <button 
+              className="about-toggle-btn"
+              onClick={() => setIsAboutOpen(!isAboutOpen)}
+            >
+              ¿Quiénes somos?
+            </button>
+          </div>
+
+          {/* Contenido desplegable */}
+          <div className={`about-content ${isAboutOpen ? 'open' : ''}`}>
+            <div className="content-container">
+              <p>Un grupo de alumnos de la UNIMET que busca incentivar el senderismo a nivel universitario</p>
+            </div>
           </div>
         </section>
 
@@ -87,8 +103,40 @@ function App() {
         </section>
       </main>
 
-      <footer>
-        <p>© {new Date().getFullYear()} Ávila - UNIMET</p>
+        <footer>
+          <div className="footer-content">
+            {/* Logo de Instagram a la izquierda */}
+            <div className="social-logos">
+              <a 
+                href="https://www.instagram.com/unimet/"
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="instagram-logo"
+              >
+                <img 
+                  src="/Imagenes/instagram.png" 
+                  alt="Instagram" 
+                />
+              </a>
+            </div>
+
+             {/* Logos a la derecha */}
+    <div className="brand-logos">
+      <a href="#" className="brand-logo">
+        <img 
+          src="/Imagenes/inparques.png"
+          alt="Inparques"
+        />
+      </a>
+      <a href="#" className="brand-logo">
+        <img 
+          src="/Imagenes/proyectoavila.png"
+          alt="Logo colaborador 2" 
+        />
+      </a>
+    </div>
+  </div>
+
       </footer>
     </div>
   );
