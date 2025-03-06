@@ -1,3 +1,5 @@
+@import "tailwindcss";
+
 /* ========== Reset básico y estilos generales ========== */
 * {
   margin: 0;
@@ -108,14 +110,13 @@ nav {
   top: 20px;
   position: relative;
   height: 550px;
-  background-image: url('/Imagenes/Landingpage.png'); /* 🟡 Ruta desde la carpeta public */
-  background-size: cover; /* Asegura que cubra todo el contenedor */
-  background-position: center; /* Centra la imagen */
-  background-repeat: no-repeat; /* Evita repetición */
+  background-image: url('/Imagenes/Landingpage.png'); 
+  background-size: cover; 
+  background-position: center;
+  background-repeat: no-repeat; 
   display: flex;
   align-items: center;
   justify-content: center;
-  /* Añade sombra al texto del botón para mejor contraste */
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5); 
   width: 110vw;
   left: 50%;
@@ -155,31 +156,88 @@ nav {
 }
 
 /* ========== Sección Beneficios ========== */
+
+/* Estilos para la sección de beneficios */
 .benefits-section {
-  display: flex;
-  background-color: rgba(255, 255, 255, 0.8);
-  margin: 2rem 5%;
-  padding: 4rem 2rem;
-  border-radius: 25px;
+  padding: 4rem 2rem; /* Espaciado interno */
+  width: 90%; /* Ancho del contenedor */
+  max-width: 1200px; /* Ancho máximo */
+  margin: 0 auto 4rem; /* Centrar horizontalmente y agregar margen inferior */
 }
 
+/* Contenedor del contenido */
+.content-container {
+  display: flex; /* Usa Flexbox */
+  align-items: flex-start; /* Alinea los elementos en la parte superior */
+  gap: 2rem; /* Espacio entre el texto y la imagen */
+}
+
+/* Estilos para el texto (con recuadro) */
 .text-content {
-  flex: 1;
-  min-width: 300px;
+  flex: 1; /* Ocupa el espacio disponible */
+  background-color: rgba(255, 255, 255, 0.8); /* Fondo con transparencia */
+  padding: 2rem; /* Espaciado interno del recuadro */
+  border-radius: 25px; /* Bordes redondeados */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
 }
 
 .image-content {
-  flex: 1;
-  margin-top: 2rem;
+  flex: 0 0 40%;
+  text-align: center;
+  margin-left: -5%;
+  position: relative; /* Añade esto */
+  top: -30px; /* Ajusta este valor según necesites */
 }
 
-.image-content img {
-  width: 100%;
-  height: auto;
-  max-width: 600px;
-  display: block;
-  margin: 0 auto;
-  border-radius: 8px;
+/* Estilos para la imagen */
+.hiking-image {
+  width: 100%; /* Ancho completo del contenedor */
+  max-width: 400px; /* Ancho máximo */
+  height: auto; /* Altura automática */
+  border-radius: 8px; /* Bordes redondeados */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+}
+
+/* Responsividad */
+@media (max-width: 768px) {
+  .content-container {
+    flex-direction: column; /* Apila el texto y la imagen */
+  }
+
+  .image-content {
+    width: 100%; /* Ocupa el ancho completo */
+    max-width: none; /* Elimina el ancho máximo */
+    margin-top: 2rem; /* Espacio entre el texto y la imagen */
+    margin-left: 0; /* Restablece el margen izquierdo */
+    top: 0;
+  }
+}
+
+/* Ajustes para pantallas de 480px o menos */
+@media (max-width: 480px) {
+  .benefits-section {
+    padding: 2rem 1rem; /* Reduce el padding */
+    margin-bottom: 2rem; /* Reduce el margen inferior */
+  }
+
+  .text-content {
+    padding: 1.5rem; /* Reduce el padding del recuadro */
+  }
+
+  h2 {
+    font-size: 1.5rem; /* Reduce el tamaño del título */
+    margin-bottom: 0.75rem; /* Reduce el margen inferior */
+  }
+
+  p {
+    font-size: 0.9rem; /* Reduce el tamaño del texto */
+    line-height: 1.5; /* Ajusta el espaciado entre líneas */
+  }
+
+  .hiking-image {
+    max-width: 100%; /* La imagen ocupa el ancho completo */
+    border-radius: 0; /* Elimina los bordes redondeados */
+  }
 }
 
 /* ========== Footer ========== */
