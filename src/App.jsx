@@ -1,10 +1,10 @@
 import React from 'react';
-import { BrowserRouter, Route,Routes } from 'react-router-dom';
-import Landing from './pages/landing';
-import Login from './pages/Login';
-import Destinos from './pages/Destinos';
-import Foro from './pages/Foro';
-import NotFound from './pages/NotFound';
+import { BrowserRouter, Route , Routes} from 'react-router-dom';
+import Landing from './Vistas/landing';
+import Login from './Vistas/Login';
+import Destinos from './Vistas/Destinos';
+import Foro from './Vistas/Foro';
+import NotFound from './Vistas/NotFound';
 
 export default function App(){
   return (

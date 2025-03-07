@@ -3,7 +3,14 @@ import React from 'react';
 const Header = ({ isMobile, isMenuOpen, setIsMenuOpen }) => (
   <header className="header">
     <nav>
-      <h1 className="logo">Ávila Haking</h1>
+     
+      <a href="/" className="logo">
+        <img 
+          src="public\Imagenes\logox.png" 
+          alt="Ávila Hacking "
+          className="logo-img"
+        />
+      </a>
 
       {isMobile && (
         <button 

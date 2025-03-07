@@ -10,7 +10,7 @@ const Footer = () => (
           rel="noopener noreferrer" 
           className="instagram-logo"
         >
-          <img src="/Imagenes/instagram.png" alt="Instagram" />
+          <img src="/Imagenes/instagram.webp" alt="Instagram" />
         </a>
       </div>
 
