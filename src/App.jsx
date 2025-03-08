@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Route , Routes} from 'react-router-dom';
-import Landing from './Vistas/landing';
+import Landing from './Vistas/Landing';
 import Login from './Vistas/Login';
 import Destinos from './Vistas/Destinos';
 import Foro from './Vistas/Foro';
