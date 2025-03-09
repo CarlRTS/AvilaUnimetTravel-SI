@@ -5,6 +5,9 @@ import Login from './Vistas/Login';
 import Destinos from './Vistas/Destinos';
 import Foro from './Vistas/Foro';
 import NotFound from './Vistas/NotFound';
+import Registro from './Vistas/Registro';
+import { registerVersion } from 'firebase/app';
+
 
 export default function App(){
   return (
@@ -15,6 +18,7 @@ export default function App(){
         <Route path="/destinos" element={<Destinos />} />
         <Route path="/foro" element={<Foro />} />
         <Route path="*" element={<NotFound />} />
+        <Route path="/registro" element={<Registro />} />
       </Routes>
     </BrowserRouter>
   );

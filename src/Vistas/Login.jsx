@@ -3,6 +3,8 @@ import Header from './components/header';
 import Footer from './components/Footer';
 import { signInWithEmailAndPassword, GoogleAuthProvider, FacebookAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "../Firebase/FireBase"; // Colocar tu ruta del proyecto hacia la carpera de firebase, si te sale error coloca el cursor arriba y copia la ruta :)
+import { Link } from 'react-router-dom';
+
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -94,6 +96,10 @@ export default function Login() {
         />
         {error && <p style={{ color: "red" }}>{error}</p>}
         <input type="submit" value="Iniciar Sesión" />
+        <p className='accion'>¿No estás registrado?</p>
+        <p className='Registro'>Haz click aquí para registrarte
+        
+        </p>
       </form>
       <Footer />
     </div>

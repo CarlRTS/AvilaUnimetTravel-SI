@@ -556,6 +556,14 @@ input[type="button"]:hover {
   background-color: #0056b3;
 }
 
+.Registro{
+  border-radius: 5px;
+  font-size: 16px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  color: #666;
+}
+
 /* Footer */
 footer {
   text-align: center;
@@ -565,5 +573,13 @@ footer {
   position: fixed; /* Fija el footer en la parte inferior */
   bottom: 0;
   width: 100%;
+}
+
+input[type="submit"]{
+  background-color: #0056b3;
+  font-weight: bold;
+  border-radius: 10px;
+  padding: 10px;
+  color: #f1f1f1;
 }
 
