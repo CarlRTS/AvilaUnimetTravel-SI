@@ -480,8 +480,9 @@ footer {
 
  /* Formulario */
  .formulario {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  place-items: center;
+  margin: 100px auto;
   gap: 15px;
   width: 100%;
   max-width: 300px;
@@ -490,7 +491,8 @@ footer {
   border-radius: 10px;
   background-color: #fff;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  margin: 0; /* Elimina cualquier margen no deseado */
+  
+  
 }
 
 .crear-cuenta {

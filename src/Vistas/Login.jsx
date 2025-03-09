@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Header from './components/header';
 import Footer from './components/Footer';
 import { signInWithEmailAndPassword, GoogleAuthProvider, FacebookAuthProvider, signInWithPopup } from "firebase/auth";
-import { auth } from "c:/Users/Sergio/Desktop/ProyectoSI/src/Firebase/FireBase"; // Colocar tu ruta del proyecto hacia la carpera de firebase, si te sale error coloca el cursor arriba y copia la ruta :)
+import { auth } from "../Firebase/FireBase"; // Colocar tu ruta del proyecto hacia la carpera de firebase, si te sale error coloca el cursor arriba y copia la ruta :)
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -55,9 +55,17 @@ export default function Login() {
   };
   //html del login
   return (
-    <div className="login-container">
+    <div className="login-container" 
+    >
       <Header />
+      <style>
+        display: grid
+        margin: auto
+        place-items: center
+
+      </style>
       <form className="formulario" onSubmit={handleLogin}>
+  
         <h2 className="crear-cuenta">Iniciar sesión</h2>
         <div className="iconos">
           {/* Botón para iniciar sesión con Google */}
