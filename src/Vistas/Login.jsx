@@ -60,12 +60,7 @@ export default function Login() {
     <div className="login-container" 
     >
       <Header />
-      <style>
-        display: grid
-        margin: auto
-        place-items: center
-
-      </style>
+      
       <form className="formulario" onSubmit={handleLogin}>
   
         <h2 className="crear-cuenta">Iniciar sesión</h2>
