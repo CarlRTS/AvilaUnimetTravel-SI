@@ -684,3 +684,41 @@ input[type="button"]:hover {
 .formulario p {
   color: rgb(0, 0, 0);
 }
+
+.user-profile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.user-image-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.user-image {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #fff;
+  transition: transform 0.3s ease;
+}
+
+.user-image:hover {
+  transform: scale(1.1);
+  cursor: pointer;
+}
+
+.user-name {
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 500;
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
