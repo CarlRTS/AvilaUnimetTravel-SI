@@ -1,0 +1,32 @@
+// App.js o cualquier otro componente
+import React, { useEffect, useState } from "react";
+import { db } from "firebase/app"; // Importa db
+import { collection, getDocs } from "firebase/firestore";
+
+function App() {
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      // Obtén datos de una colección en Firestore
+      const querySnapshot = await getDocs(collection(db, "tu_coleccion"));
+      const items = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      setData(items);
+    };
+
+    fetchData();
+  }, []);
+
+  return (
+    <div>
+      <h1>Datos de Firestore</h1>
+      <ul>
+        {data.map(item => (
+          <li key={item.id}>{item.PicoHumboldt}</li> // Cambia "nombre" por el campo que quieras mostrar
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+export default App;
