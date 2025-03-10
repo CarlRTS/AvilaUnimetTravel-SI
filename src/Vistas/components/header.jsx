@@ -1,5 +1,5 @@
 import { useLocation, Link } from 'react-router-dom';
-import { useAuth } from '../AuthContext'; // Importa el contexto
+import { useAuth } from '../AuthContext';
 
 const Header = ({ isMobile, isMenuOpen, setIsMenuOpen }) => {
   const location = useLocation();
@@ -62,8 +62,15 @@ const Header = ({ isMobile, isMenuOpen, setIsMenuOpen }) => {
               </li>
             </>
           ) : (
-            location.pathname !== '/login' && (
-              <li><Link to="/login" className="btn login-btn">Iniciar sesión</Link></li>
+            !['/login', '/registrar'].includes(location.pathname) && (
+              <>
+                <li>
+                  <Link to="/registrar" className="btn register-btn">Registrarse</Link>
+                </li>
+                <li>
+                  <Link to="/login" className="btn login-btn">Iniciar sesión</Link>
+                </li>
+              </>
             )
           )}
         </ul>
