@@ -641,24 +641,46 @@ input[type="button"]:hover {
     max-width: 100%;
   }
 }
-.registro-link {
-  margin-top: 20px;
-  text-align: center;
-  font-size: 0.9em;
-  color: #666;
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
+.registrarse{
+
+  background-color: #0056b3;
+  font-weight: bold;
+  border-radius: 10px;
+  padding: 10px;
+  color: #f1f1f1;
+  margin: 100px auto;
+  align-items: center;
+  display: grid;
+
 }
 
-.registro-link a {
-  color: #007bff;
-  text-decoration: none;
-  font-weight: 500;
-  transition: color 0.3s ease;
+.formulario input[type="text"],
+.formulario input[type="email"],
+.formulario input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+  margin-bottom: 20px; /* Añadido mayor margen inferior */
 }
 
-.registro-link a:hover {
-  color: #0056b3;
-  text-decoration: underline;
+.formulario button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: #4CAF50;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  font-weight: bold;
+  justify-self: center; 
+}
+
+.formulario button:hover {
+  background-color: #45a049;
+}
+
+.formulario p {
+  color: rgb(0, 0, 0);
 }
