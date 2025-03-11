@@ -490,7 +490,8 @@ footer {
   border-radius: 10px;
   background-color: #fff;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  margin: 80px; /* Elimina cualquier margen no deseado */
+  margin: auto; /* Elimina cualquier margen no deseado */
+  margin-top: 10%;
 }
 
 .crear-cuenta {
@@ -608,10 +609,11 @@ input[type="button"]:hover {
 }
 
 .imagen-login {
-  width: 100%;
+  width: 50%;
   max-width: 80%;
   height: auto;
   margin-bottom: 30px; /* Espacio entre imagen y texto */
+  margin-left: 50%;
 }
 
 .texto-informativo {
@@ -622,9 +624,10 @@ input[type="button"]:hover {
   line-height: 1.6;
   color: #666;
   width: fit-content; /* Ajuste clave */
-  max-width: 500px; /* Máximo permitido */
+  max-width: 300px; /* Máximo permitido */
   box-sizing: border-box;
-  display: inline-block; /* Ajusta al contenido */
+  display: grid; /* Ajusta al contenido */
+  margin-left: 50%;
 }
 @media (max-width: 768px) {
   .seccion-derecha {
