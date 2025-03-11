@@ -35,11 +35,7 @@ export default function App() {
           <Route path="/registrar" element={<Registro />} />
           
           {/* Rutas protegidas */}
-          <Route path="/destinos" element={
-            <ProtectedRoute>
-              <Destinos />
-            </ProtectedRoute>
-          } />
+          <Route path="/destinos" element={ <Destinos />} />
           
           <Route path="/foro" element={
             <ProtectedRoute>
