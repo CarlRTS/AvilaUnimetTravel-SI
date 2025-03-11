@@ -684,41 +684,149 @@ input[type="button"]:hover {
 .formulario p {
   color: rgb(0, 0, 0);
 }
+/* Contenedor principal */
+.lagunazo-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
 
-.user-profile {
+/* Título principal */
+.lagunazo-titulo-principal {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  color: #213547;
+}
+
+/* Subtítulos */
+.lagunazo-subtitulos {
   display: flex;
-  align-items: center;
-  gap: 10px;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 2rem;
 }
 
-.user-image-container {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 8px;
+.lagunazo-subtitulos h2 {
+  font-size: 1.5rem;
+  color: #213547;
+  background-color: #f5f5f5;
+  padding: 0.75rem 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
 }
 
-.user-image {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid #fff;
-  transition: transform 0.3s ease;
+.lagunazo-subtitulos h2:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
 }
 
-.user-image:hover {
-  transform: scale(1.1);
+/* Grid principal */
+.lagunazo-grid-principal {
+  display: grid;
+  gap: 2rem;
+}
+
+/* Grid de rutas */
+.lagunazo-grid-rutas {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+}
+
+/* Tarjeta de ruta */
+.ruta-card {
+  padding: 1.5em;
+  border-radius: 15px;
+  background: #f9f9f9;
+  transition: transform 0.3s, box-shadow 0.3s;
   cursor: pointer;
 }
 
-.user-name {
-  color: #fff;
-  font-size: 0.9rem;
-  font-weight: 500;
-  max-width: 120px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+.ruta-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
+/* Contenedor de imagen */
+.imagen-container {
+  height: 200px;
+  overflow: hidden;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+}
+
+.imagen-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s;
+}
+
+.ruta-card:hover img {
+  transform: scale(1.05);
+}
+
+/* Sección informativa */
+.lagunazo-seccion-informativa {
+  margin-top: 3rem;
+  padding: 2em;
+  background: #f5f5f5;
+  border-radius: 15px;
+}
+
+/* Lista vacacional */
+.lagunazo-lista-vacional {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.lagunazo-lista-vacional li {
+  padding: 1rem;
+  background: white;
+  border-radius: 8px;
+  transition: transform 0.3s;
+}
+
+.lagunazo-lista-vacional li:hover {
+  transform: translateX(5px);
+}
+
+/* Instrucciones */
+.lagunazo-instrucciones {
+  color: #666;
+  margin-top: 2rem;
+}
+
+/* Animaciones del logo principal */
+.logo-spin {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+
+.logo-spin:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .logo-spin {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
