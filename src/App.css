@@ -830,3 +830,29 @@ input[type="button"]:hover {
     transform: rotate(360deg);
   }
 }
+
+.user-image-container {
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.user-image-container:hover {
+  transform: scale(1.05);
+}
+
+.user-image {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.user-name {
+  font-weight: 500;
+  color: #333;
+  font-size: 0.9rem;
+}
