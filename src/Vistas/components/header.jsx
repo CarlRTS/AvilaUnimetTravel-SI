@@ -1,18 +1,36 @@
-import { useLocation, Link } from 'react-router-dom';
+import { useLocation, Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../AuthContext';
+import { useEffect, useState } from 'react';
 
 const Header = ({ isMobile, isMenuOpen, setIsMenuOpen }) => {
   const location = useLocation();
-  const { user, logout } = useAuth();
-  
+  const navigate = useNavigate();
+  const { currentUser, loading, logout } = useAuth();
+  const [authChecked, setAuthChecked] = useState(false);
+
+  // URLs constantes
+  const LOGO_URL = 'https://qaibprcdanrwecebxhqp.supabase.co/storage/v1/object/public/avila//Instagram_story_black_party_fiesta_negro_blanco_3_-removebg-preview.png';
+  const DEFAULT_AVATAR = 'https://qaibprcdanrwecebxhqp.supabase.co/storage/v1/object/public/avila/images-removebg-preview.png';
+
+  useEffect(() => {
+    if (!loading) {
+      const timer = setTimeout(() => setAuthChecked(true), 150);
+      return () => clearTimeout(timer);
+    }
+  }, [loading]);
+
   return (
     <header className="header">
       <nav>
         <a href="/" className="logo">
           <img 
-            src="public/Imagenes/logox.png" 
+            src={LOGO_URL}
             alt="Ávila Hacking"
             className="logo-img"
+            onError={(e) => {
+              e.target.onerror = null;
+              e.target.src = DEFAULT_AVATAR;
+            }}
           />
         </a>
 
@@ -41,36 +59,53 @@ const Header = ({ isMobile, isMenuOpen, setIsMenuOpen }) => {
           <li><Link to="/foro" className="btn">Foro</Link></li>
           <li><Link to="/destinos" className="btn">Destinos</Link></li>
           
-          {user ? (
-            <>
-              <li className="user-profile">
-                <div className="user-image-container">
-                  <img 
-                    src={user.photoURL || '/Imagenes/usuario-default.png'} 
-                    alt="Perfil de usuario" 
-                    className="user-image"
-                    onError={(e) => {
-                      e.target.onerror = null; 
-                      e.target.src = '/Imagenes/usuario-default.png';
-                    }}
-                  />
-                  <span className="user-name">{user.displayName || 'Usuario'}</span>
-                </div>
-              </li>
-              <li>
-                <button onClick={logout} className="btn logout-btn">Cerrar sesión</button>
-              </li>
-            </>
-          ) : (
-            !['/login', '/registrar'].includes(location.pathname) && (
+          {authChecked && (
+            currentUser ? (
               <>
-                <li>
-                  <Link to="/registrar" className="btn register-btn">Registrarse</Link>
+                <li className="user-profile">
+                  <div 
+                    className="user-image-container"
+                    onClick={() => navigate('/mi-perfil')}
+                    role="button"
+                    tabIndex={0}
+                    onKeyPress={(e) => e.key === 'Enter' && navigate('/mi-perfil')}
+                  >
+                    <img 
+                      src={currentUser.photoURL || DEFAULT_AVATAR} 
+                      alt="Perfil" 
+                      className="user-image"
+                      onError={(e) => {
+                        e.target.onerror = null; 
+                        e.target.src = DEFAULT_AVATAR;
+                      }}
+                    />
+                    <span className="user-name">
+                      {currentUser.displayName || 'Usuario'}
+                    </span>
+                  </div>
                 </li>
                 <li>
-                  <Link to="/login" className="btn login-btn">Iniciar sesión</Link>
+                  <button 
+                    onClick={logout} 
+                    className="btn logout-btn"
+                    aria-label="Cerrar sesión"
+                  >
+                    Cerrar sesión
+                  </button>
                 </li>
               </>
+            ) : (
+              location.pathname !== '/login' && (
+                <li>
+                  <Link 
+                    to="/login" 
+                    className="btn login-btn"
+                    aria-label="Iniciar sesión"
+                  >
+                    Iniciar sesión
+                  </Link>
+                </li>
+              )
             )
           )}
         </ul>

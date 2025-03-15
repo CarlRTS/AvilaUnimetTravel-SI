@@ -10,6 +10,7 @@ import NotFound from './Vistas/NotFound';
 import Registro from './Vistas/Registro';
 import Footer from './Vistas/components/Footer';
 import { useAuth } from './Vistas/AuthContext';
+import MiPerfil from './Vistas/MiPerfil';
 
 // Componente para rutas protegidas (solo autenticados)
 function ProtectedRoute({ children }) {
@@ -27,7 +28,7 @@ export default function App() {
         <Routes>
           {/* Ruta pública */}
           <Route path="/" element={<Landing />} />
-          
+          <Route path="/mi-perfil" element={<MiPerfil/>} />
           {/* Ruta de login accesible siempre */}
           <Route path="/login" element={<Login />} />
           
