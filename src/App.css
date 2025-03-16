@@ -480,8 +480,9 @@ footer {
 
  /* Formulario */
  .formulario {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  place-items: center;
+  margin: 100px auto;
   gap: 15px;
   width: 100%;
   max-width: 300px;
@@ -490,7 +491,23 @@ footer {
   border-radius: 10px;
   background-color: #fff;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  margin: 80px; /* Elimina cualquier margen no deseado */
+  
+  
+}
+
+.registroforms {
+  display: grid;
+  place-items: center;
+  margin: 100px auto;
+  gap: 15px;
+  width: 100%;
+  max-width: 300px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-color: #fff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin: 0; /* Elimina cualquier margen no deseado */
 }
 
 .crear-cuenta {
@@ -549,146 +566,15 @@ input[type="button"] {
   font-size: 16px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  justify-self: center; 
 }
 
 input[type="button"]:hover {
   background-color: #0056b3;
 }
-.toggle-password {
-  position: absolute;
-  right: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 1.1em;
-  z-index: 2; /* Asegura que esté detrás de los iconos */
-}
 
-/* Nuevos estilos para el toggle de contraseña */
-.password-wrapper {
-  position: relative;  /* Contenedor relativo para posicionar el botón */
-  width: 100%;
-}
-.toggle-password:hover {
-  color: #333; /* Mismo hover que los iconos sociales */
-}
-
-.toggle-password:disabled {
-  cursor: not-allowed;
-  opacity: 0.5;
-}
-.input-error {
-  border: 2px solid #ff4444 !important;
-  animation: shake 0.3s;
-}
-
-@keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  25% { transform: translateX(-5px); }
-  75% { transform: translateX(5px); }
-}
-
-.error-message {
-  color: #ff4444;
-  font-size: 0.9em;
-  margin: -10px 0 10px 0;
-  text-align: left;
-  width: 100%;
-}
-/* Sección imagen + texto */
-.seccion-derecha {
-  position: absolute;
-  right: 0;
-  top: 0;
-  margin: 185px 40px 0 600px; /* Ajustar: arriba | derecha | abajo | izquierda */
-  width: auto;
-  z-index: 1;
-}
-
-.imagen-login {
-  width: 100%;
-  max-width: 80%;
-  height: auto;
-  margin-bottom: 30px; /* Espacio entre imagen y texto */
-}
-
-.texto-informativo {
-  background: #f8f9fa;
-  padding: 25px;
-  border-radius: 8px;
-  border-left: 4px solid #3498db;
-  line-height: 1.6;
-  color: #666;
-  width: fit-content; /* Ajuste clave */
-  max-width: 500px; /* Máximo permitido */
-  box-sizing: border-box;
-  display: inline-block; /* Ajusta al contenido */
-}
-@media (max-width: 768px) {
-  .seccion-derecha {
-    position: static;
-    margin: 40px 20px;
-  }
-  
-  .contenedor-imagen-texto {
-    right: auto;
-    top: auto;
-  }
-  
-  .imagen-login {
-    max-width: 100%;
-  }
-}
-.registrarse{
-
-  background-color: #0056b3;
-  font-weight: bold;
-  border-radius: 10px;
-  padding: 10px;
-  color: #f1f1f1;
-  margin: 100px auto;
-  align-items: center;
-  display: grid;
-
-}
-
-.formulario input[type="text"],
-.formulario input[type="email"],
-.formulario input[type="password"] {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  box-sizing: border-box;
-  margin-bottom: 20px; /* Añadido mayor margen inferior */
-}
-
-.formulario button {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  background-color: #4CAF50;
-  color: #fff;
-  font-size: 16px;
-  cursor: pointer;
-  font-weight: bold;
-  justify-self: center; 
-}
-
-.formulario button:hover {
-  background-color: #45a049;
-}
-
-.formulario p {
-  color: rgb(0, 0, 0);
-}
-/* Contenedor principal */
-.lagunazo-container {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+/* Footer */
+footer {
   text-align: center;
 }
 
@@ -872,6 +758,62 @@ input[type="button"]:hover {
   max-width: 300px;
   width: 100%;
 }
+
+input[type="submit"]{
+  background-color: #0056b3;
+  font-weight: bold;
+  border-radius: 10px;
+  padding: 10px;
+  color: #f1f1f1;
+  justify-self: center;
+}
+
+
+.registrarse{
+
+  background-color: #0056b3;
+  font-weight: bold;
+  border-radius: 10px;
+  padding: 10px;
+  color: #f1f1f1;
+  margin: 100px auto;
+  align-items: center;
+  display: grid;
+
+}
+
+.formulario input[type="text"],
+.formulario input[type="email"],
+.formulario input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+  margin-bottom: 20px; /* Añadido mayor margen inferior */
+}
+
+.formulario button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: #4CAF50;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  font-weight: bold;
+  justify-self: center; 
+}
+
+.formulario button:hover {
+  background-color: #45a049;
+}
+
+.formulario p {
+  color: rgb(0, 0, 0);
+}
+
+
 
 .paypal-button-container {
   max-width: 300px;

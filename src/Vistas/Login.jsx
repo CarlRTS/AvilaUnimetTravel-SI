@@ -2,15 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from './components/header';
 import Footer from './components/Footer';
-import { 
-  signInWithEmailAndPassword,
-  GoogleAuthProvider,
-  FacebookAuthProvider,
-  signInWithPopup 
-} from "firebase/auth";
-import { auth } from "../Firebase/FireBase";
-import { Link } from 'react-router-dom';
-import { useAuth } from './AuthContext';
+import { signInWithEmailAndPassword, GoogleAuthProvider, FacebookAuthProvider, signInWithPopup } from "firebase/auth";
+import { auth } from "c:/Users/Sergio/Desktop/ProyectoSI/src/Firebase/FireBase"; // Colocar tu ruta del proyecto hacia la carpera de firebase, si te sale error coloca el cursor arriba y copia la ruta :)
 
 export default function Login() {
   const navigate = useNavigate();
@@ -99,103 +92,39 @@ export default function Login() {
   };
 
   return (
-    <div className="login-container">
+    <div className="login-container" 
+    >
       <Header />
-      <div className="contenedor-principal">
-        <form className="formulario" onSubmit={handleLogin}>
-          <h2 className="crear-cuenta">Iniciar sesión</h2>
-          
-          <div className="iconos">
-            <div 
-              className="borde-iconos" 
-              onClick={iniciarGoogle}
-              role="button"
-              style={{ cursor: loading ? 'not-allowed' : 'pointer' }}
-            >
-              <img src="/Imagenes/Google.png" alt="Google" />
-            </div>
-            
-            <div 
-              className="borde-iconos" 
-              onClick={iniciarFacebook}
-              role="button"
-              style={{ cursor: loading ? 'not-allowed' : 'pointer' }}
-            >
-              <img src="/Imagenes/Facebook.png" alt="Facebook" />
-            </div>
+      <form className="formulario" onSubmit={handleLogin}>
+        <h2 className="crear-cuenta">Iniciar sesión</h2>
+        <div className="iconos">
+          {/* Botón para iniciar sesión con Google */}
+          <div className="borde-iconos" onClick={handleGoogleLogin}>
+            <img src="public/Imagenes/Google.png" alt="Google" />
           </div>
-
-          <p className="cuenta-gratis">Sé parte de la experiencia</p>
-
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => {
-              setEmail(e.target.value);
-              if (e.target.value && !validateEmail(e.target.value)) {
-                setEmailError('Formato de email inválido');
-              } else {
-                setEmailError('');
-              }
-            }}
-            disabled={loading}
-            className={emailError ? 'input-error' : ''}
-          />
-          {emailError && <p className="error-message">{emailError}</p>}
-
-          <div className="password-wrapper">
-            <input
-              type={showPassword ? "text" : "password"}
-              placeholder="Contraseña"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              disabled={loading}
-            />
-            <button
-              type="button"
-              className="toggle-password"
-              onClick={() => setShowPassword(!showPassword)}
-              disabled={loading}
-            >
-              {showPassword ? "🙈" : "👁️"}
-            </button>
-          </div>
-
-          {error && <p className="error-message">{error}</p>}
-
-          <button 
-            type="submit" 
-            className="boton-principal"
-            disabled={loading}
-          >
-            {loading ? 'Cargando...' : 'Iniciar Sesión'}
-          </button>
-
-          <div className="registro-link">
-            <span>¿No estás registrado?</span>
-            <Link to="/registrar"> Haz click aquí para registrarte</Link>
-          </div>
-        </form>
-
-        <div className="seccion-derecha">
-          <img 
-            src="/Imagenes/Theavila.png" 
-            alt="Ilustración" 
-            className="imagen-login"
-          />
-          <div className="texto-informativo">
-            <h3>¿Sabías que Ávila era un volcán extinto?</h3>
-            <p>
-              Aunque parezca sorprendente, 
-              durante mucho tiempo se creyó que Ávila era un volcán inactivo. 
-              Esto se debe a que en ocasiones se observaron emanaciones de humo y cenizas,
-              especialmente en las zonas costeras cercanas. Sin embargo, 
-              estudios geológicos más recientes han descartado esta teoría.
-            </p>
+          {/* Botón para iniciar sesión con Facebook */}
+          <div className="borde-iconos" onClick={handleFacebookLogin}>
+            <img src="public/Imagenes/Facebook.png" alt="Facebook" />
           </div>
         </div>
-      </div>
+        <p className="cuenta-gratis">Sé parte de la experiencia</p>
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+        <input
+          type="password"
+          placeholder="Contraseña"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+        {error && <p style={{ color: "red" }}>{error}</p>}
+        <input type="submit" value="Iniciar Sesión" />
+      </form>
       <Footer />
     </div>
   );
