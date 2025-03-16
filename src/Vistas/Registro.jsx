@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom'; // Añadir esto
 import Header from './components/header';
@@ -76,7 +76,7 @@ export default function Registro() {
         </div>
     );
 }
-=======
+
 import React, { useState } from "react";
 import Header from './components/header';
 import AboutSection from './components/AboutSection';
@@ -154,7 +154,7 @@ const Registro = () => {
     );
   };
   
-  export default Registro;
+
 
     
   
@@ -162,4 +162,4 @@ const Registro = () => {
   
 
   
->>>>>>> 999c08f35ddac9d87bbf36c378e0274a80be76c0
+
