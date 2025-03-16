@@ -11,6 +11,9 @@ import Registro from './Vistas/Registro';
 import Footer from './Vistas/components/Footer';
 import { useAuth } from './Vistas/AuthContext';
 import MiPerfil from './Vistas/MiPerfil';
+import TransaccionExitosa from './Vistas/components/TransaccionExitosa';
+import PayPall from './Vistas/PayPall';
+import BtnPaylPal from './Vistas/components/BtnPaylPal';
 
 // Componente para rutas protegidas (solo autenticados)
 function ProtectedRoute({ children }) {
@@ -35,9 +38,13 @@ export default function App() {
           {/* Resto de rutas públicas */}
           <Route path="/registrar" element={<Registro />} />
           
+          
           {/* Rutas protegidas */}
           <Route path="/destinos" element={ <Destinos />} />
           
+          <Route path = "/exitosa" element={<TransaccionExitosa/>}/>
+          <Route path = "/paypall" element={<PayPall/>}/>
+
           <Route path="/foro" element={
             <ProtectedRoute>
               <Foro />
