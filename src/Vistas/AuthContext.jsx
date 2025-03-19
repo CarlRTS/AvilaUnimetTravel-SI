@@ -1,69 +1,68 @@
 import { createContext, useContext, useEffect, useState } from 'react';
-import { auth } from '../Firebase/FireBase';
-import { signOut } from 'firebase/auth';
+import { auth, db } from '../Firebase/FireBase';
+import { signOut, updateProfile } from 'firebase/auth';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
+  const [userRole, setUserRole] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    let unsubscribe;
-    let mounted = true;
+  // Crear/actualizar usuario en Firestore
+  const handleUserDocument = async (user) => {
+    const userDocRef = doc(db, 'users', user.uid);
+    const userDoc = await getDoc(userDocRef);
 
-    const initializeAuth = async () => {
-      unsubscribe = auth.onAuthStateChanged(async (user) => {
-        if (!mounted) return;
-        
-        if (user) {
-          try {
-            // Verificación forzada del token
-            const token = await user.getIdToken(true);
-            if (!token) throw new Error('Token inválido');
-            
-            setCurrentUser({
-              uid: user.uid,
-              email: user.email,
-              displayName: user.displayName,
-              photoURL: user.photoURL
-            });
-          } catch (error) {
-            console.error('Error de autenticación:', error);
-            await signOut(auth);
-            setCurrentUser(null);
-          }
-        } else {
-          setCurrentUser(null);
-        }
-        setLoading(false);
+    if (!userDoc.exists()) {
+      await setDoc(userDocRef, {
+        email: user.email,
+        role: 'user', // Rol por defecto
+        createdAt: new Date(),
       });
-    };
+    }
 
-    initializeAuth();
-    
-    return () => {
-      mounted = false;
-      unsubscribe?.();
-    };
+    // Obtener rol actualizado
+    const updatedDoc = await getDoc(userDocRef);
+    setUserRole(updatedDoc.data()?.role || 'user');
+  };
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged(async (user) => {
+      if (user) {
+        await handleUserDocument(user);
+
+        // Asignar nombre y foto predeterminados si es necesario
+        if (user.providerData[0]?.providerId === 'password' && !user.displayName) {
+          await updateProfile(user, {
+            displayName: user.email.split('@')[0],
+            photoURL: "https://tu-url-de-imagen-predeterminada.jpg"
+          });
+        }
+
+        setCurrentUser(user);
+      } else {
+        setCurrentUser(null);
+        setUserRole(null);
+      }
+      setLoading(false);
+    });
+
+    return unsubscribe;
   }, []);
 
   const logout = async () => {
-    try {
-      await signOut(auth);
-      // Limpieza adicional
-      setCurrentUser(null);
-      if (typeof window !== 'undefined') {
-        sessionStorage.clear();
-        localStorage.removeItem('firebase:authUser:AIzaSyB_7mz17XXXXXXXXXXXXXXX:[DEFAULT]');
-      }
-    } catch (error) {
-      console.error("Error al cerrar sesión:", error);
-    }
+    await signOut(auth);
   };
 
   return (
-    <AuthContext.Provider value={{ currentUser, loading, logout }}>
+    <AuthContext.Provider value={{ 
+      currentUser, 
+      userRole, 
+      loading, 
+      logout 
+    }}>
       {children}
     </AuthContext.Provider>
   );

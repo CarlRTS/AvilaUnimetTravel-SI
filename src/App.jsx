@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 import { AuthProvider } from './Vistas/AuthContext';
 import Landing from './Vistas/landing';
 import Login from './Vistas/Login';
@@ -11,13 +11,14 @@ import Registro from './Vistas/Registro';
 import Footer from './Vistas/components/Footer';
 import { useAuth } from './Vistas/AuthContext';
 import MiPerfil from './Vistas/MiPerfil';
+import GestionGuias from './Vistas/GestionGuias'; // 1. Importar el componente
+import AdminRoute from './Vistas/components/AdminRoute';
 
-// Componente para rutas protegidas (solo autenticados)
+
+// Componente para rutas protegidas
 function ProtectedRoute({ children }) {
   const { currentUser, loading } = useAuth();
-
   if (loading) return <div>Cargando...</div>;
-  
   return currentUser ? children : <Navigate to="/login" replace />;
 }
 
@@ -28,21 +29,38 @@ export default function App() {
         <Routes>
           {/* Ruta pública */}
           <Route path="/" element={<Landing />} />
-          <Route path="/mi-perfil" element={<MiPerfil/>} />
-          {/* Ruta de login accesible siempre */}
+          
+          {/* Ruta de login */}
           <Route path="/login" element={<Login />} />
           
-          {/* Resto de rutas públicas */}
+          {/* Rutas públicas */}
           <Route path="/registrar" element={<Registro />} />
-          
+
           {/* Rutas protegidas */}
-          <Route path="/destinos" element={ <Destinos />} />
-          
+          <Route path="/mi-perfil" element={
+            <ProtectedRoute>
+              <MiPerfil />
+            </ProtectedRoute>
+          }/>
+
+          <Route path="/destinos" element={
+            <ProtectedRoute>
+              <Destinos />
+            </ProtectedRoute>
+          }/>
+
           <Route path="/foro" element={
             <ProtectedRoute>
               <Foro />
             </ProtectedRoute>
-          } />
+          }/>
+
+          {/* 3. Nueva ruta admin */}
+          <Route path="/gestion-guias" element={
+            <AdminRoute>
+              <GestionGuias />
+            </AdminRoute>
+          }/>
 
           <Route path="*" element={<NotFound />} />
         </Routes>

@@ -1,30 +1,43 @@
 import React, { useState } from "react";
-import { useNavigate } from 'react-router-dom'; // Añadir esto
+import { useNavigate } from 'react-router-dom';
 import Header from './components/header';
 import Footer from './components/Footer';
 import { auth } from "../Firebase/FireBase";
-import { createUserWithEmailAndPassword, signOut } from 'firebase/auth';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { useAuth } from './AuthContext'; // Importa el contexto
 
 export default function Registro() {
     const [nombre, setNombre] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
-    const navigate = useNavigate(); // Obtener la función de navegación
+    const navigate = useNavigate();
+    const { forceUpdate } = useAuth(); // Obtén la función de actualización
 
     const confirmacionRegistro = async (e) => {
         e.preventDefault();
         try {
-            await createUserWithEmailAndPassword(auth, email, password);
-            // Limpiar formulario y redirigir
-            setNombre("");
-            setEmail("");
-            setPassword("");
-            await signOut(auth);
-            navigate('/login'); // Redirección después de registro exitoso
+            // 1. Crear usuario
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            
+            // 2. Actualizar perfil
+            await updateProfile(userCredential.user, {
+                displayName: nombre || email.split('@')[0], // Nombre obligatorio
+                photoURL: "https://qaibprcdanrwecebxhqp.supabase.co/storage/v1/object/public/avila/images-removebg-preview.png"
+            });
+
+            // 3. Forzar actualización del contexto
+            forceUpdate();
+
+            // 4. Redirigir
+            navigate('/mi-perfil');
             
         } catch (error) {
             setError(error.message);
+        } finally {
+            setNombre("");
+            setEmail("");
+            setPassword("");
         }
     };
 
