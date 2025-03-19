@@ -180,7 +180,7 @@ export default function Login() {
 
         <div className="seccion-derecha">
           <img 
-            src="/Imagenes/Theavila.png" 
+            src="https://qaibprcdanrwecebxhqp.supabase.co/storage/v1/object/public/avila//Theavila.png" 
             alt="Ilustración" 
             className="imagen-login"
           />

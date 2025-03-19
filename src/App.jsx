@@ -13,6 +13,7 @@ import { useAuth } from './Vistas/AuthContext';
 import MiPerfil from './Vistas/MiPerfil';
 import GestionGuias from './Vistas/GestionGuias'; // 1. Importar el componente
 import AdminRoute from './Vistas/components/AdminRoute';
+import EditPerfile from './Vistas/EditPerfile';
 
 
 // Componente para rutas protegidas
@@ -44,8 +45,14 @@ export default function App() {
           }/>
 
           <Route path="/destinos" element={
-            <ProtectedRoute>
+           
               <Destinos />
+            
+          }/>
+
+          <Route path="/editar-perfil" element={
+            <ProtectedRoute>
+              <EditPerfile />
             </ProtectedRoute>
           }/>
 
