@@ -819,3 +819,59 @@ input[type="submit"]{
   max-width: 300px;
   width: 100%;
 }
+
+.contactos-container {
+  text-align: center;
+  padding: 40px 20px;
+  background-color: #f9f9f9; /* Fondo claro */
+}
+
+.contactos-titulo {
+  font-size: 2.5rem;
+  color: #333;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+.contactos-info {
+  background-color: white;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.contactos-info p {
+  font-size: 1.2rem;
+  color: #555;
+  margin-bottom: 15px;
+}
+
+.contactos-info strong {
+  color: #333;
+  font-weight: bold;
+}
+
+.contactos-unimet {
+  margin-top: 30px;
+  font-size: 1.1rem;
+  color: #777;
+}
+
+
+.contactanos-button {
+  color: white; /* Color del texto en blanco */
+  text-decoration: none; /* Sin subrayado */
+  font-size: 16px;
+  margin-top: 2px; /* Espacio superior para separar los botones */
+  display: block; /* Asegura que ocupe su propia línea */
+}
+
+.contactanos-button:hover {
+  color: #4CAF50; /* Cambia el color al pasar el mouse */
+}
+
+
+
+
