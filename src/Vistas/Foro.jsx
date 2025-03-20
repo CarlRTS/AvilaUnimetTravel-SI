@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { auth, db } from "./firebase";
 import { collection, addDoc, query, orderBy, onSnapshot } from "firebase/firestore";
+import PostSearch from "./PostSearch";
+
 
 const Foro = () => {
   const [user, setUser] = useState(null);
@@ -10,8 +12,13 @@ const Foro = () => {
   const [content, setContent] = useState("");
   const [posts, setPosts] = useState([]);
   const [comment, setComment] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+  const displayPosts = searchResults.length > 0 ? searchResults : posts;
+  const handleSearch = (results) => {
+    setSearchResults(results);
 
 
+  
   //Revisa si el usuario esta registrado
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -46,7 +53,7 @@ const Foro = () => {
     return () => unsubscribe();
   }, []);
 
-  // Comment Functions
+  // funciones de comentarios
   const addComment = async (postId, comment) => {
     if (!comment) return;
     try {
@@ -62,6 +69,7 @@ const Foro = () => {
   };
 
   return (
+    
     <div style={styles.container}>
       {/* secciono de verificacion de usuario */}
       {!user ? (
@@ -95,6 +103,8 @@ const Foro = () => {
           </button>
         </div>
       )}
+
+            
 
       {/* Seccion de publicacion*/}
       {user && (
@@ -147,6 +157,7 @@ const Foro = () => {
                   </button>
                 </div>
               )}
+
               {/* Render */}
               {post.comments &&
                 post.comments.map((comment, index) => (
@@ -160,8 +171,29 @@ const Foro = () => {
         ))}
       </div>
     </div>
+
+{/* Mostrar Resultados de Busqueda*/}
+<div style={styles.postsContainer}>
+{displayPosts.map((post) => (
+  <div key={post.id} style={styles.post}>
+    <h3>{post.title}</h3>
+    <p>{post.content}</p>
+    <small>Por: {post.author}</small>
+    
+
+    
+
   );
+
+  
+
 };
+
+{/* Buscador de Posts */}
+<PostSearch onSearch={handleSearch}/>
+
+}
+
 
 
 
