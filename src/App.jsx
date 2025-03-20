@@ -17,6 +17,7 @@ import EditPerfile from './Vistas/EditPerfile';
 import { MisReservas } from './Vistas/MisDestinos';
 import GestionRutas from './Vistas/GestionRutas';
 import Informacion from './Vistas/Informarcion';
+import searchbar from './Vistas/components/searchbar';
 
 
 // Componente para rutas protegidas
