@@ -17,6 +17,7 @@ export default function App(){
         <Route path="/destinos" element={<Destinos />} />
         <Route path="/foro" element={<Foro />} />
         <Route path="*" element={<NotFound />} />
+        <Route path="/contactos" element={<Contactos />} />
       </Routes>
     </BrowserRouter>
   );
