@@ -12,7 +12,7 @@ const SearchBar = ({ temp, onSearch }) => {
   };
 
   return (
-    <div style={styles.container}>
+    <div>
       <input
         type="descripcion"
         temp={temp}
@@ -20,7 +20,7 @@ const SearchBar = ({ temp, onSearch }) => {
         onChange={handleInputChange}
         style={styles.input}
       />
-      <button onClick={handleSearch} style={styles.button}>
+      <button onClick={handleSearch}>
        Buscar
       </button>
     </div>
