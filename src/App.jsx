@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 import { AuthProvider } from './Vistas/AuthContext';
@@ -11,13 +10,13 @@ import Registro from './Vistas/Registro';
 import Footer from './Vistas/components/Footer';
 import { useAuth } from './Vistas/AuthContext';
 import MiPerfil from './Vistas/MiPerfil';
-import GestionGuias from './Vistas/GestionGuias'; // 1. Importar el componente
+import GestionGuias from './Vistas/GestionGuias';
 import AdminRoute from './Vistas/components/AdminRoute';
 import EditPerfile from './Vistas/EditPerfile';
 import { MisReservas } from './Vistas/MisDestinos';
 import GestionRutas from './Vistas/GestionRutas';
 import Informacion from './Vistas/Informarcion';
-
+import Galeria from './Vistas/Galeria';
 
 // Componente para rutas protegidas
 function ProtectedRoute({ children }) {
@@ -40,56 +39,52 @@ export default function App() {
           {/* Rutas públicas */}
           <Route path="/registrar" element={<Registro />} />
 
+          {/* Ruta de Galeria (pública) */}
+          <Route path="/galeria" element={<Galeria />} />
+
           {/* Rutas protegidas */}
           <Route path="/mi-perfil" element={
             <ProtectedRoute>
               <MiPerfil />
             </ProtectedRoute>
-          }/>
+          } />
 
-          <Route path="/destinos" element={
-           
-              <Destinos />
-            
-          }/>
+          <Route path="/destinos" element={<Destinos />} />
 
-          <Route path="/informacion" element={
-                    
-                    <Informacion />
-                  
-                }/>
+          <Route path="/informacion" element={<Informacion />} />
 
           <Route path="/editar-perfil" element={
             <ProtectedRoute>
               <EditPerfile />
             </ProtectedRoute>
-          }/>
+          } />
 
           <Route path="/gestion-rutas" element={
             <ProtectedRoute>
               <GestionRutas />
             </ProtectedRoute>
-          }/>
+          } />
 
           <Route path="/mis-reservas" element={
             <ProtectedRoute>
               <MisReservas />
             </ProtectedRoute>
-          }/>
+          } />
 
           <Route path="/foro" element={
             <ProtectedRoute>
               <Foro />
             </ProtectedRoute>
-          }/>
+          } />
 
-          {/* 3. Nueva ruta admin */}
+          {/* Ruta admin */}
           <Route path="/gestion-guias" element={
             <AdminRoute>
               <GestionGuias />
             </AdminRoute>
-          }/>
+          } />
 
+          {/* Ruta para páginas no encontradas */}
           <Route path="*" element={<NotFound />} />
         </Routes>
         <Footer />

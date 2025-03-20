@@ -109,6 +109,12 @@ export default function MiPerfil() {
         Ver rutas agendadas
       </button>
       <button 
+        onClick={() => navigate('/galeria')} // Botón para editar galería
+        className="bg-red-200 text-red-900 text-lg py-4 px-6 rounded-xl hover:bg-red-300 transition-all duration-300"
+      >
+        Editar Galería
+      </button>
+      <button 
         onClick={handleEditProfile}
         className="bg-red-200 text-red-900 text-lg py-4 px-6 rounded-xl md:col-span-2 hover:bg-red-300 transition-all duration-300"
       >
