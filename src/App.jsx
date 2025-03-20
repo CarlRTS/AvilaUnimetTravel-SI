@@ -16,6 +16,7 @@ import AdminRoute from './Vistas/components/AdminRoute';
 import EditPerfile from './Vistas/EditPerfile';
 import { MisReservas } from './Vistas/MisDestinos';
 import GestionRutas from './Vistas/GestionRutas';
+import Informacion from './Vistas/Informarcion';
 
 
 // Componente para rutas protegidas
@@ -51,6 +52,12 @@ export default function App() {
               <Destinos />
             
           }/>
+
+          <Route path="/informacion" element={
+                    
+                    <Informacion />
+                  
+                }/>
 
           <Route path="/editar-perfil" element={
             <ProtectedRoute>

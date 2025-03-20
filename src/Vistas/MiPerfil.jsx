@@ -2,22 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from './components/header';
 import { useAuth } from './AuthContext';
-import { doc, getDoc, updateDoc } from 'firebase/firestore';
+import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../Firebase/FireBase';
+
+
 
 export default function MiPerfil() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [rutasAsignadas, setRutasAsignadas] = useState([]);
-  const [disponibilidad, setDisponibilidad] = useState({
-    lunes: false,
-    martes: false,
-    miercoles: false,
-    jueves: false,
-    viernes: false,
-    sabado: false,
-    domingo: false,
-  });
   const { currentUser, userRole } = useAuth();
   const navigate = useNavigate();
 
@@ -49,27 +42,6 @@ export default function MiPerfil() {
       }
     } catch (error) {
       console.error("Error obteniendo rutas asignadas:", error);
-    }
-  };
-
-  // Función para actualizar la disponibilidad del guía
-  const handleDisponibilidadChange = async (dia) => {
-    const nuevaDisponibilidad = { ...disponibilidad, [dia]: !disponibilidad[dia] };
-    setDisponibilidad(nuevaDisponibilidad);
-
-    try {
-      // Actualizar la disponibilidad del guía en Firestore
-      await updateDoc(doc(db, 'users', currentUser.uid), { disponibilidad: nuevaDisponibilidad });
-
-      // Actualizar los días de salida en la ruta asignada
-      if (rutasAsignadas.length > 0) {
-        const rutaId = rutasAsignadas[0].id;
-        const diasSalida = Object.keys(nuevaDisponibilidad).filter(d => nuevaDisponibilidad[d]);
-        await updateDoc(doc(db, 'Rutas', rutaId), { diasSalida });
-        console.log("Días de salida actualizados correctamente");
-      }
-    } catch (error) {
-      console.error("Error actualizando disponibilidad o días de salida:", error);
     }
   };
 
@@ -195,30 +167,10 @@ export default function MiPerfil() {
                   <ul>
                     {rutasAsignadas.map(ruta => (
                       <li key={ruta.id} className="text-lg mb-2">
-                        {ruta.nombre} ▹ Salidas: {ruta.diasSalida?.join(', ') || 'No definido'}
+                        {ruta.nombre} 
                       </li>
                     ))}
                   </ul>
-                </div>
-              )}
-
-              {/* Mostrar y ajustar disponibilidad */}
-              {userRole === 'guide' && (
-                <div className="bg-white p-8 rounded-xl shadow-2xl">
-                  <h3 className="text-xl font-bold mb-4">Disponibilidad</h3>
-                  <div className="space-y-4">
-                    {Object.keys(disponibilidad).map((dia) => (
-                      <label key={dia} className="flex items-center space-x-2">
-                        <input 
-                          type="checkbox" 
-                          checked={disponibilidad[dia]} 
-                          onChange={() => handleDisponibilidadChange(dia)} 
-                          className="form-checkbox h-5 w-5 text-green-500"
-                        />
-                        <span className="text-lg capitalize">{dia}</span>
-                      </label>
-                    ))}
-                  </div>
                 </div>
               )}
             </div>
