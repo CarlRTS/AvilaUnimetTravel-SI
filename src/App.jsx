@@ -14,6 +14,8 @@ import MiPerfil from './Vistas/MiPerfil';
 import GestionGuias from './Vistas/GestionGuias'; // 1. Importar el componente
 import AdminRoute from './Vistas/components/AdminRoute';
 import EditPerfile from './Vistas/EditPerfile';
+import { MisReservas } from './Vistas/MisDestinos';
+import GestionRutas from './Vistas/GestionRutas';
 
 
 // Componente para rutas protegidas
@@ -53,6 +55,18 @@ export default function App() {
           <Route path="/editar-perfil" element={
             <ProtectedRoute>
               <EditPerfile />
+            </ProtectedRoute>
+          }/>
+
+          <Route path="/gestion-rutas" element={
+            <ProtectedRoute>
+              <GestionRutas />
+            </ProtectedRoute>
+          }/>
+
+          <Route path="/mis-reservas" element={
+            <ProtectedRoute>
+              <MisReservas />
             </ProtectedRoute>
           }/>
 

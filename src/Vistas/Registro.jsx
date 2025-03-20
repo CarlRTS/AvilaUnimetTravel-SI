@@ -1,207 +1,184 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from './components/header';
-import Footer from './components/Footer';
-import { auth } from "../Firebase/FireBase";
-import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
-import { useAuth } from './AuthContext'; // Importa el contexto
-import { Link } from 'react-router-dom';
+import { useAuth } from './AuthContext';
 
-export default function Registro() {
-    const [nombre, setNombre] = useState("");
-    const [apellido, setApellido] = useState("");
-    const [email, setEmail] = useState("");
-    const [numeroTelefono, setNumeroTelefono] = useState("");
-    const [password, setPassword] = useState("");
-    const [error, setError] = useState("");
-    const [emailError, setEmailError] = useState("");
-    const [loading, setLoading] = useState(false);
-    const [showPassword, setShowPassword] = useState(false);
-    const navigate = useNavigate();
-    const { forceUpdate, currentUser } = useAuth(); // Obtén la función de actualización
+export default function MiPerfil() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const { currentUser, userRole } = useAuth();
+  const navigate = useNavigate();
 
-    // Redirección si ya está autenticado
-    useEffect(() => {
-        if (currentUser) {
-            navigate('/');
-        }
-    }, [currentUser, navigate]);
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
-    const validateEmail = (email) => {
-        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return re.test(String(email).toLowerCase());
-    };
+  const defaultImage = 'https://qaibprcdanrwecebxhqp.supabase.co/storage/v1/object/public/avila//images-removebg-preview.png';
 
-    const confirmacionRegistro = async (e) => {
-        e.preventDefault();
-        setLoading(true);
-        setError("");
-        setEmailError("");
+  // Función para manejar la edición del perfil
+  const handleEditProfile = () => {
+    navigate('/editar-perfil'); // Navega a la página de edición del perfil
+  };
 
-        if (!validateEmail(email)) {
-            setEmailError("Formato de email inválido");
-            setLoading(false);
-            return;
-        }
+  // Botones para usuario común
+  const userButtons = (
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <button className="bg-blue-200 text-blue-900 text-lg py-4 px-6 rounded-xl hover:bg-blue-300 transition-all duration-300">
+        Editar foto de Perfil
+      </button>
+      <button className="bg-blue-200 text-blue-900 text-lg py-4 px-6 rounded-xl hover:bg-blue-300 transition-all duration-300">
+        Ver rutas agendadas
+      </button>
+      <button 
+        onClick={() => {
+          console.log('Redirigiendo a /foro'); // Depuración
+          navigate('/foro', { replace: true }); // Usa { replace: true } para evitar problemas de historial
+        }}
+        className="bg-blue-200 text-blue-900 text-lg py-4 px-6 rounded-xl md:col-span-2 hover:bg-blue-300 transition-all duration-300"
+      >
+        Interactuar en el foro
+      </button>
+      {/* Botón de edición integrado */}
+      <button 
+        onClick={handleEditProfile}
+        className="bg-blue-200 text-blue-900 text-lg py-4 px-6 rounded-xl hover:bg-blue-300 transition-all duration-300"
+      >
+        Editar Perfil
+      </button>
+    </div>
+  );
 
-        try {
-            // 1. Crear usuario
-            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-            
-            // 2. Actualizar perfil
-            await updateProfile(userCredential.user, {
-                displayName: `${nombre} ${apellido}`, // Nombre completo
-                photoURL: "https://qaibprcdanrwecebxhqp.supabase.co/storage/v1/object/public/avila/images-removebg-preview.png"
-            });
+  // Botones para guía (nuevo rol)
+  const guideButtons = (
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <button className="bg-green-200 text-green-900 text-lg py-4 px-6 rounded-xl hover:bg-green-300 transition-all duration-300">
+        Editar disponibilidad
+      </button>
+      <button 
+        onClick={() => navigate('/rutas-asignadas')}
+        className="bg-green-200 text-green-900 text-lg py-4 px-6 rounded-xl hover:bg-green-300 transition-all duration-300"
+      >
+        Ver rutas asignadas
+      </button>
+      <button className="bg-green-200 text-green-900 text-lg py-4 px-6 rounded-xl md:col-span-2 hover:bg-green-300 transition-all duration-300">
+        Reportar incidencias
+      </button>
+      {/* Botón de edición integrado */}
+      <button 
+        onClick={handleEditProfile}
+        className="bg-green-200 text-green-900 text-lg py-4 px-6 rounded-xl hover:bg-green-300 transition-all duration-300"
+      >
+        Editar Perfil
+      </button>
+    </div>
+  );
 
-            // 3. Forzar actualización del contexto
-            forceUpdate();
+  // Botones para admin
+  const adminButtons = (
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <button 
+        onClick={() => navigate('/gestion-guias')}
+        className="bg-red-200 text-red-900 text-lg py-4 px-6 rounded-xl hover:bg-red-300 transition-all duration-300"
+      >
+        Gestionar guías
+      </button>
+      <button className="bg-red-200 text-red-900 text-lg py-4 px-6 rounded-xl hover:bg-red-300 transition-all duration-300">
+        Ver rutas agendadas
+      </button>
+      <button className="bg-red-200 text-red-900 text-lg py-4 px-6 rounded-xl hover:bg-red-300 transition-all duration-300">
+        Modificar rutas
+      </button>
+      <button className="bg-red-200 text-red-900 text-lg py-4 px-6 rounded-xl hover:bg-red-300 transition-all duration-300">
+        Historial de pagos
+      </button>
+      {/* Botón de edición integrado */}
+      <button 
+        onClick={handleEditProfile}
+        className="bg-red-200 text-red-900 text-lg py-4 px-6 rounded-xl hover:bg-red-300 transition-all duration-300"
+      >
+        Editar Perfil
+      </button>
+    </div>
+  );
 
-            // 4. Redirigir
-            navigate('/mi-perfil');
-            
-        } catch (error) {
-            console.error('Error de registro:', error);
-            setError(getFirebaseError(error.code));
-        } finally {
-            setLoading(false);
-        }
-    };
+  // Determinar texto del título según rol
+  const getRoleTitle = () => {
+    switch(userRole) {
+      case 'admin': return 'Panel Administrativo';
+      case 'guide': return 'Panel de Guía';
+      default: return 'Bienvenido';
+    }
+  };
 
-    const getFirebaseError = (errorCode) => {
-        switch(errorCode) {
-            case 'auth/email-already-in-use': 
-                return 'El correo electrónico ya está en uso';
-            case 'auth/invalid-email': 
-                return 'Formato de email inválido';
-            case 'auth/weak-password': 
-                return 'La contraseña debe tener al menos 6 caracteres';
-            case 'auth/too-many-requests':
-                return 'Demasiados intentos fallidos. Intenta más tarde';
-            default: 
-                return `Error de registro (${errorCode})`;
-        }
-    };
+  return (
+    <div className="min-h-screen">
+      <Header 
+        isMobile={isMobile}
+        isMenuOpen={isMenuOpen}
+        setIsMenuOpen={setIsMenuOpen}
+      />
 
-    return (
-        <div className="login-container">
-            <Header />
-            <div className="contenedor-principal">
-                <form className="formulario" onSubmit={confirmacionRegistro}>
-                    <h2 className="crear-cuenta">Registro</h2>
-                    
-                    <div>
-                        <input
-                            type="text"
-                            placeholder="Nombre"
-                            value={nombre}
-                            onChange={(e) => setNombre(e.target.value)}
-                            required
-                            disabled={loading}
-                        />
-                    </div>
-
-                    <div>
-                        <input
-                            type="text"
-                            placeholder="Apellido"
-                            value={apellido}
-                            onChange={(e) => setApellido(e.target.value)}
-                            required
-                            disabled={loading}
-                        />
-                    </div>
-
-                    <div>
-                        <input
-                            type="email"
-                            placeholder="Correo electrónico"
-                            value={email}
-                            onChange={(e) => {
-                                setEmail(e.target.value);
-                                if (e.target.value && !validateEmail(e.target.value)) {
-                                    setEmailError('Formato de email inválido');
-                                } else {
-                                    setEmailError('');
-                                }
-                            }}
-                            required
-                            disabled={loading}
-                            className={emailError ? 'input-error' : ''}
-                        />
-                        {emailError && <p className="error-message">{emailError}</p>}
-                    </div>
-
-                    <div className="relative">
-                        <input
-                            type="tel"
-                            placeholder="Número de teléfono"
-                            value={numeroTelefono}
-                            onChange={(e) => setNumeroTelefono(e.target.value)}
-                            pattern="[0-9]{11}" // Validación para 10 dígitos
-                            required
-                            disabled={loading}
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
-                        />
-                        <span className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400">
-                            📞
-                        </span>
-                    </div>
-
-                    <div className="password-wrapper relative">
-                        <input
-                            type={showPassword ? "text" : "password"}
-                            placeholder="Contraseña"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                            disabled={loading}
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
-                        />
-                        <button
-                            type="button"
-                            className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 hover:text-gray-700 focus:outline-none"
-                            onClick={() => setShowPassword(!showPassword)}
-                            disabled={loading}
-                        >
-                            {showPassword ? "🙈" : "👁️"}
-                        </button>
-                    </div>
-
-                    {error && <p className="error-message">{error}</p>}
-
-                    <button 
-                        type="submit" 
-                        className="boton-principal"
-                        disabled={loading}
-                    >
-                        {loading ? 'Cargando...' : 'Registrarse'}
-                    </button>
-
-                    <div className="registro-link">
-                        <span>¿Ya tienes una cuenta?</span>
-                        <Link to="/login"> Haz click aquí para iniciar sesión</Link>
-                    </div>
-                </form>
-
-                <div className="seccion-derecha">
-                    <img 
-                        src="https://qaibprcdanrwecebxhqp.supabase.co/storage/v1/object/public/avila//Theavila.png" 
-                        alt="Ilustración" 
-                        className="imagen-login"
-                    />
-                    <div className="texto-informativo">
-                        <h3>¿Por qué el nombre Ávila?</h3>
-                        <p>
-                        El nombre Ávila se debe al apellido del Gobernador Gerónimo de Ávila, 
-                        quien era dueño de unos huertos en la serranía que está a los pies del cerro.
-                         A la muerte del Gobernador, sus hijos heredan sus tierras, y para este entonces
-                        ya todos en Caracas la conocían como la sierra de los Ávila o el Cerro de Ávila.
-                        </p>
-                    </div>
-                </div>
+      <div className="bg-[#feae4b] min-h-[90vh] pt-12 pb-24">
+        <div className="w-full max-w-6xl mx-auto px-4">
+          <div className="flex flex-col lg:flex-row gap-8 items-start">
+            <div className="w-full lg:w-1/2 space-y-8">
+              <div>
+                <h1 className="text-white text-4xl lg:text-5xl font-bold leading-tight">
+                  {getRoleTitle()}, 
+                  <span className="block mt-2">{currentUser?.displayName || 'Usuario'}</span>
+                </h1>
+                <p className="text-white text-xl lg:text-2xl mt-4">
+                  {userRole === 'admin' 
+                    ? 'Herramientas de gestión' 
+                    : userRole === 'guide'
+                    ? 'Gestión de rutas asignadas'
+                    : '¿Qué acción deseas realizar?'}
+                </p>
+              </div>
+              
+              <div className="bg-white p-8 rounded-xl shadow-2xl">
+                {userRole === 'admin' 
+                  ? adminButtons 
+                  : userRole === 'guide'
+                  ? guideButtons
+                  : userButtons}
+              </div>
             </div>
-            <Footer />
+
+            <div className="w-full lg:w-1/2 flex justify-center lg:justify-end">
+              <div className="text-center space-y-8">
+                <div className="relative">
+                  <img 
+                    src={currentUser?.photoURL || defaultImage}
+                    alt="Perfil de usuario" 
+                    className="rounded-full w-48 h-48 lg:w-64 lg:h-64 mx-auto border-6 border-white shadow-2xl object-cover"
+                    onError={(e) => {
+                      e.target.onerror = null; 
+                      e.target.src = defaultImage;
+                    }}
+                  />
+                  <p className="text-white text-2xl lg:text-3xl font-medium mt-6">
+                    {currentUser?.displayName || 'Usuario'}
+                    {userRole === 'admin' && (
+                      <span className="block text-sm text-yellow-300 mt-2">
+                        (Administrador)
+                      </span>
+                    )}
+                    {userRole === 'guide' && (
+                      <span className="block text-sm text-green-300 mt-2">
+                        (Guía certificado)
+                      </span>
+                    )}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-    );
+      </div>
+    </div>
+  );
 }

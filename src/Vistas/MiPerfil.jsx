@@ -2,10 +2,22 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from './components/header';
 import { useAuth } from './AuthContext';
+import { doc, getDoc, updateDoc } from 'firebase/firestore';
+import { db } from '../Firebase/FireBase';
 
 export default function MiPerfil() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [rutasAsignadas, setRutasAsignadas] = useState([]);
+  const [disponibilidad, setDisponibilidad] = useState({
+    lunes: false,
+    martes: false,
+    miercoles: false,
+    jueves: false,
+    viernes: false,
+    sabado: false,
+    domingo: false,
+  });
   const { currentUser, userRole } = useAuth();
   const navigate = useNavigate();
 
@@ -20,53 +32,80 @@ export default function MiPerfil() {
 
   // Función para manejar la edición del perfil
   const handleEditProfile = () => {
-    navigate('/editar-perfil'); // Navega a la página de edición del perfil
+    navigate('/editar-perfil');
+  };
+
+  // Función para obtener las rutas asignadas
+  const fetchRutasAsignadas = async () => {
+    try {
+      const userDoc = await getDoc(doc(db, 'users', currentUser.uid));
+      const rutaAsignadaId = userDoc.data().rutaAsignada;
+
+      if (rutaAsignadaId) {
+        const rutaDoc = await getDoc(doc(db, 'Rutas', rutaAsignadaId));
+        if (rutaDoc.exists()) {
+          setRutasAsignadas([{ id: rutaDoc.id, ...rutaDoc.data() }]);
+        }
+      }
+    } catch (error) {
+      console.error("Error obteniendo rutas asignadas:", error);
+    }
+  };
+
+  // Función para actualizar la disponibilidad del guía
+  const handleDisponibilidadChange = async (dia) => {
+    const nuevaDisponibilidad = { ...disponibilidad, [dia]: !disponibilidad[dia] };
+    setDisponibilidad(nuevaDisponibilidad);
+
+    try {
+      // Actualizar la disponibilidad del guía en Firestore
+      await updateDoc(doc(db, 'users', currentUser.uid), { disponibilidad: nuevaDisponibilidad });
+
+      // Actualizar los días de salida en la ruta asignada
+      if (rutasAsignadas.length > 0) {
+        const rutaId = rutasAsignadas[0].id;
+        const diasSalida = Object.keys(nuevaDisponibilidad).filter(d => nuevaDisponibilidad[d]);
+        await updateDoc(doc(db, 'Rutas', rutaId), { diasSalida });
+        console.log("Días de salida actualizados correctamente");
+      }
+    } catch (error) {
+      console.error("Error actualizando disponibilidad o días de salida:", error);
+    }
   };
 
   // Botones para usuario común
   const userButtons = (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <button className="bg-blue-200 text-blue-900 text-lg py-4 px-6 rounded-xl hover:bg-blue-300 transition-all duration-300">
-        Editar foto de Perfil
-      </button>
-      <button className="bg-blue-200 text-blue-900 text-lg py-4 px-6 rounded-xl hover:bg-blue-300 transition-all duration-300">
+      <button 
+        onClick={() => navigate('/mis-reservas')}
+        className="bg-blue-200 text-blue-900 text-lg py-4 px-6 rounded-xl hover:bg-blue-300 transition-all duration-300"
+      >
         Ver rutas agendadas
       </button>
-      <button 
-        onClick={() => {
-          console.log('Redirigiendo a /foro'); // Depuración
-          navigate('/foro', { replace: true }); // Usa { replace: true } para evitar problemas de historial
-        }}
-        className="bg-blue-200 text-blue-900 text-lg py-4 px-6 rounded-xl md:col-span-2 hover:bg-blue-300 transition-all duration-300"
-      >
-        Interactuar en el foro
-      </button>
-      {/* Botón de edición integrado */}
       <button 
         onClick={handleEditProfile}
         className="bg-blue-200 text-blue-900 text-lg py-4 px-6 rounded-xl hover:bg-blue-300 transition-all duration-300"
       >
         Editar Perfil
       </button>
+      <button 
+        onClick={() => navigate('/foro')}
+        className="bg-blue-200 text-blue-900 text-lg py-4 px-6 rounded-xl md:col-span-2 hover:bg-blue-300 transition-all duration-300"
+      >
+        Interactuar en el foro
+      </button>
     </div>
   );
 
-  // Botones para guía (nuevo rol)
+  // Botones para guía
   const guideButtons = (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <button className="bg-green-200 text-green-900 text-lg py-4 px-6 rounded-xl hover:bg-green-300 transition-all duration-300">
-        Editar disponibilidad
-      </button>
       <button 
-        onClick={() => navigate('/rutas-asignadas')}
+        onClick={fetchRutasAsignadas}
         className="bg-green-200 text-green-900 text-lg py-4 px-6 rounded-xl hover:bg-green-300 transition-all duration-300"
       >
         Ver rutas asignadas
       </button>
-      <button className="bg-green-200 text-green-900 text-lg py-4 px-6 rounded-xl md:col-span-2 hover:bg-green-300 transition-all duration-300">
-        Reportar incidencias
-      </button>
-      {/* Botón de edición integrado */}
       <button 
         onClick={handleEditProfile}
         className="bg-green-200 text-green-900 text-lg py-4 px-6 rounded-xl hover:bg-green-300 transition-all duration-300"
@@ -85,19 +124,21 @@ export default function MiPerfil() {
       >
         Gestionar guías
       </button>
-      <button className="bg-red-200 text-red-900 text-lg py-4 px-6 rounded-xl hover:bg-red-300 transition-all duration-300">
-        Ver rutas agendadas
-      </button>
-      <button className="bg-red-200 text-red-900 text-lg py-4 px-6 rounded-xl hover:bg-red-300 transition-all duration-300">
+      <button 
+        onClick={() => navigate('/gestion-rutas')}
+        className="bg-red-200 text-red-900 text-lg py-4 px-6 rounded-xl hover:bg-red-300 transition-all duration-300"
+      >
         Modificar rutas
       </button>
-      <button className="bg-red-200 text-red-900 text-lg py-4 px-6 rounded-xl hover:bg-red-300 transition-all duration-300">
-        Historial de pagos
+      <button 
+        onClick={() => navigate('/mis-reservas')}
+        className="bg-red-200 text-red-900 text-lg py-4 px-6 rounded-xl hover:bg-red-300 transition-all duration-300"
+      >
+        Ver rutas agendadas
       </button>
-      {/* Botón de edición integrado */}
       <button 
         onClick={handleEditProfile}
-        className="bg-red-200 text-red-900 text-lg py-4 px-6 rounded-xl hover:bg-red-300 transition-all duration-300"
+        className="bg-red-200 text-red-900 text-lg py-4 px-6 rounded-xl md:col-span-2 hover:bg-red-300 transition-all duration-300"
       >
         Editar Perfil
       </button>
@@ -146,6 +187,40 @@ export default function MiPerfil() {
                   ? guideButtons
                   : userButtons}
               </div>
+
+              {/* Mostrar rutas asignadas */}
+              {userRole === 'guide' && rutasAsignadas.length > 0 && (
+                <div className="bg-white p-8 rounded-xl shadow-2xl">
+                  <h3 className="text-xl font-bold mb-4">Rutas Asignadas</h3>
+                  <ul>
+                    {rutasAsignadas.map(ruta => (
+                      <li key={ruta.id} className="text-lg mb-2">
+                        {ruta.nombre} ▹ Salidas: {ruta.diasSalida?.join(', ') || 'No definido'}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {/* Mostrar y ajustar disponibilidad */}
+              {userRole === 'guide' && (
+                <div className="bg-white p-8 rounded-xl shadow-2xl">
+                  <h3 className="text-xl font-bold mb-4">Disponibilidad</h3>
+                  <div className="space-y-4">
+                    {Object.keys(disponibilidad).map((dia) => (
+                      <label key={dia} className="flex items-center space-x-2">
+                        <input 
+                          type="checkbox" 
+                          checked={disponibilidad[dia]} 
+                          onChange={() => handleDisponibilidadChange(dia)} 
+                          className="form-checkbox h-5 w-5 text-green-500"
+                        />
+                        <span className="text-lg capitalize">{dia}</span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
 
             <div className="w-full lg:w-1/2 flex justify-center lg:justify-end">
