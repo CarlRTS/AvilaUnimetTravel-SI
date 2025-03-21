@@ -20,7 +20,8 @@ export default function Informacion() {
                 <h2 className="text-3xl font-bold text-center mb-8 text-white">Información</h2>
 
 
-                <Section title="Sobre Ávila Hiking" image="https://qaibprcdanrwecebxhqp.supabase.co/storage/v1/object/public/avila//Avila.webp">
+                <Section title="Sobre Ávila Hiking" image="https://qaibprcdanrwecebxhqp.supabase.co/storage/v1/object/public/avila/Avila.webp
+">
 
                     <p className="text-gray-700 mb-4">
 
@@ -70,7 +71,7 @@ export default function Informacion() {
                 </Section>
 
 
-                <Section title="Consejos para Excursionistas" image="https://qaibprcdanrwecebxhqp.supabase.co/storage/v1/object/public/avila//foto.png">
+                <Section title="Consejos para Excursionistas" image="https://qaibprcdanrwecebxhqp.supabase.co/storage/v1/object/public/avila/foto.png">
 
                     <p className="text-gray-700 mb-4">
 
@@ -95,7 +96,7 @@ export default function Informacion() {
                 </Section>
 
 
-                <Section title="Tipo de Calzado" image="https://qaibprcdanrwecebxhqp.supabase.co/storage/v1/object/public/avila//calzado.webp">
+                <Section title="Tipo de Calzado" image="https://qaibprcdanrwecebxhqp.supabase.co/storage/v1/object/public/avila/calzado.webp">
 
                     <p className="text-gray-700 mb-4">
 
@@ -122,7 +123,7 @@ export default function Informacion() {
                 </Section>
 
 
-                <Section title="Recomendaciones de Vestimenta" image="https://qaibprcdanrwecebxhqp.supabase.co/storage/v1/object/public/avila//dddd.png">
+                <Section title="Recomendaciones de Vestimenta" image="https://qaibprcdanrwecebxhqp.supabase.co/storage/v1/object/public/avila/dddd.png">
 
                     <p className="text-gray-700 mb-4">
 

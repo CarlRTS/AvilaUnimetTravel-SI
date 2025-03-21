@@ -50,8 +50,11 @@ function HikingTrailReviews() {
   };
 
   return (
-    <div className="reseña-container">
+    
+    <div>
       <Header />
+      <div className="reseña-container">
+      
       <h1 className="reseñatitulo">Reseñas Avila Hiking</h1>
       <p className="parrafo-reseña">
         ¡Comparte tus experiencias sobre las rutas de excursionismo y ayuda a
@@ -134,6 +137,8 @@ function HikingTrailReviews() {
       </ul>
       <Footer />
     </div>
+    </div>
+    
   );
 }
 

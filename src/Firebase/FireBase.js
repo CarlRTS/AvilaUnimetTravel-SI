@@ -19,3 +19,5 @@ const db = getFirestore(app);
 const storage = getStorage(app); // Crea la instancia de Storage
 
 export { auth, db, storage }; // Exporta storage
+
+export default db;
