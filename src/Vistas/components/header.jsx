@@ -1,6 +1,7 @@
 import { useLocation, Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../AuthContext';
 import { useEffect, useState } from 'react';
+import SearchBar from './searchbar';
 
 const Header = ({ isMobile, isMenuOpen, setIsMenuOpen }) => {
   const location = useLocation();
@@ -51,6 +52,7 @@ const Header = ({ isMobile, isMenuOpen, setIsMenuOpen }) => {
             type="search" 
             placeholder="Buscar..." 
             className="search-input" 
+            onChange={handleInputChange}
           />
           <button type="submit" className="search-btn">🔍</button>
         </div>
