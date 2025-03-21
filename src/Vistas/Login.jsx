@@ -22,9 +22,7 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
-  // Redirección si ya está autenticado
   useEffect(() => {
-    // Solo redirige después de que Firebase termine de cargar el estado
     if (!authloading && currentUser) {
       navigate('/');
     }
@@ -99,103 +97,130 @@ export default function Login() {
   };
 
   return (
-    <div className="login-container">
+    <div className="min-h-screen" style={{ backgroundColor: '#feae4b' }}>
       <Header />
-      <div className="contenedor-principal">
-        <form className="formulario" onSubmit={handleLogin}>
-          <h2 className="crear-cuenta">Iniciar sesión</h2>
-          
-          <div className="iconos">
-            <div 
-              className="borde-iconos" 
-              onClick={iniciarGoogle}
-              role="button"
-              style={{ cursor: loading ? 'not-allowed' : 'pointer' }}
-            >
-              <img src="/Imagenes/Google.png" alt="Google" />
-            </div>
+      
+      <div className="container mx-auto px-4 py-12 max-w-6xl">
+        <div className="bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col md:flex-row">
+          {/* Sección del formulario */}
+          <div className="w-full md:w-1/2 p-8">
+            <h2 className="text-3xl font-bold text-gray-800 mb-6">Iniciar Sesión</h2>
             
-            <div 
-              className="borde-iconos" 
-              onClick={iniciarFacebook}
-              role="button"
-              style={{ cursor: loading ? 'not-allowed' : 'pointer' }}
-            >
-              <img src="/Imagenes/Facebook.png" alt="Facebook" />
-            </div>
+            <form onSubmit={handleLogin} className="space-y-5">
+              {/* Botones Sociales */}
+              <div className="flex gap-4 justify-center mb-6">
+                <button
+                  type="button"
+                  onClick={iniciarGoogle}
+                  className="p-2 border-2 border-gray-200 rounded-full hover:border-orange-500 transition-colors"
+                  disabled={loading}
+                >
+                  <img src="/Imagenes/Google.png" alt="Google" className="w-8 h-8" />
+                </button>
+                
+                <button
+                  type="button"
+                  onClick={iniciarFacebook}
+                  className="p-2 border-2 border-gray-200 rounded-full hover:border-orange-500 transition-colors"
+                  disabled={loading}
+                >
+                  <img src="/Imagenes/Facebook.png" alt="Facebook" className="w-8 h-8" />
+                </button>
+              </div>
+
+              <p className="text-center text-gray-600 mb-6">Sé parte de la experiencia</p>
+
+              {/* Email */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Correo electrónico
+                </label>
+                <input
+                  type="email"
+                  className="w-full px-4 py-2.5 border border-orange-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all"
+                  placeholder="ejemplo@correo.com"
+                  value={email}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                    setEmailError(validateEmail(e.target.value) ? '' : 'Formato inválido');
+                  }}
+                  disabled={loading}
+                />
+                {emailError && <p className="mt-1 text-sm text-red-500">{emailError}</p>}
+              </div>
+
+              {/* Contraseña */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Contraseña
+                </label>
+                <div className="relative">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    className="w-full px-4 py-2.5 pr-10 border border-orange-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                    disabled={loading}
+                  />
+                  <button
+                    type="button"
+                    className="absolute right-3 top-3.5 text-orange-400 hover:text-orange-600"
+                    onClick={() => setShowPassword(!showPassword)}
+                    disabled={loading}
+                  >
+                    {showPassword ? "🙈" : "👁️"}
+                  </button>
+                </div>
+              </div>
+
+              {error && <p className="text-sm text-red-500">{error}</p>}
+
+              <button
+                type="submit" 
+                className="w-full bg-orange-600 text-white py-2.5 px-4 rounded-lg hover:bg-orange-700 transition-colors disabled:bg-orange-400"
+                disabled={loading}
+              >
+                {loading ? 'Cargando...' : 'Iniciar Sesión'}
+              </button>
+
+              <p className="text-center text-sm text-gray-600">
+                ¿No estás registrado? {" "}
+                <Link 
+                  to="/registrar" 
+                  className="text-orange-600 hover:underline font-medium"
+                >
+                  Regístrate aquí
+                </Link>
+              </p>
+            </form>
           </div>
 
-          <p className="cuenta-gratis">Sé parte de la experiencia</p>
-
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => {
-              setEmail(e.target.value);
-              if (e.target.value && !validateEmail(e.target.value)) {
-                setEmailError('Formato de email inválido');
-              } else {
-                setEmailError('');
-              }
-            }}
-            disabled={loading}
-            className={emailError ? 'input-error' : ''}
-          />
-          {emailError && <p className="error-message">{emailError}</p>}
-
-          <div className="password-wrapper">
-            <input
-              type={showPassword ? "text" : "password"}
-              placeholder="Contraseña"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              disabled={loading}
-            />
-            <button
-              type="button"
-              className="toggle-password"
-              onClick={() => setShowPassword(!showPassword)}
-              disabled={loading}
-            >
-              {showPassword ? "🙈" : "👁️"}
-            </button>
-          </div>
-
-          {error && <p className="error-message">{error}</p>}
-
-          <button 
-            type="submit" 
-            className="boton-principal"
-            disabled={loading}
+          {/* Sección gráfica */}
+          <div 
+            className="w-full md:w-1/2 p-8 flex flex-col items-center justify-center"
+            style={{ backgroundColor: '#feae4b33' }}
           >
-            {loading ? 'Cargando...' : 'Iniciar Sesión'}
-          </button>
-
-          <div className="registro-link">
-            <span>¿No estás registrado?</span>
-            <Link to="/registrar"> Haz click aquí para registrarte</Link>
-          </div>
-        </form>
-
-        <div className="seccion-derecha">
-          <img 
-            src="/Imagenes/Theavila.png" 
-            alt="Ilustración" 
-            className="imagen-login"
-          />
-          <div className="texto-informativo">
-            <h3>¿Sabías que Ávila era un volcán extinto?</h3>
-            <p>
-              Aunque parezca sorprendente, 
-              durante mucho tiempo se creyó que Ávila era un volcán inactivo. 
-              Esto se debe a que en ocasiones se observaron emanaciones de humo y cenizas,
-              especialmente en las zonas costeras cercanas. Sin embargo, 
-              estudios geológicos más recientes han descartado esta teoría.
-            </p>
+            <img 
+              src="https://qaibprcdanrwecebxhqp.supabase.co/storage/v1/object/public/avila//Theavila.png" 
+              alt="Cerro El Ávila"
+              className="w-full max-w-xs mb-6"
+            />
+            <div className="text-center">
+              <h3 className="text-2xl font-semibold text-gray-800 mb-3">
+                ¿Sabías que Ávila era un volcán extinto?
+              </h3>
+              <p className="text-gray-700 leading-relaxed">
+                Aunque parezca sorprendente, durante mucho tiempo se creyó que Ávila era un volcán inactivo. 
+                Esto se debe a que en ocasiones se observaron emanaciones de humo y cenizas,
+                especialmente en las zonas costeras cercanas. Sin embargo, 
+                estudios geológicos más recientes han descartado esta teoría.
+              </p>
+            </div>
           </div>
         </div>
       </div>
+
       <Footer />
     </div>
   );
