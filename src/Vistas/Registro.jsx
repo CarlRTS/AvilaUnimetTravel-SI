@@ -121,7 +121,7 @@ export default function Registro() {
           <div className="container mx-auto px-4 py-12 max-w-6xl">
               <div className="bg-orange-100 rounded-2xl shadow-lg overflow-hidden flex flex-col md:flex-row">
                   {/* Sección Formulario */}
-                  <div className="w-full md:w-1/2 p-8">
+                  <div className="w-full md:w-1/2 p-8"style={{ backgroundColor: '#fff' }}>
                       <h2 className="text-3xl font-bold text-orange-800 mb-6">Registro</h2>
                       
                       <form onSubmit={confirmacionRegistro} className="space-y-5">

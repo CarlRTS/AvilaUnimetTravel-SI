@@ -19,6 +19,7 @@ import GestionRutas from './Vistas/GestionRutas';
 import Informacion from './Vistas/Informarcion';
 
 
+
 // Componente para rutas protegidas
 function ProtectedRoute({ children }) {
   const { currentUser, loading } = useAuth();
