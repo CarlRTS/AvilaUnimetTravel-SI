@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from './AuthContext';
 import { updateProfile } from 'firebase/auth';
 import { doc, updateDoc } from 'firebase/firestore';
-import { db } from '../Firebase/FireBase'; // Asegúrate de importar tu configuración de Firebase
+import { db } from '../Firebase/FireBase'; 
 import Header from './components/header';
 
 export default function EditarPerfil() {

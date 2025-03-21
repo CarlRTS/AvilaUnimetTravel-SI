@@ -3,11 +3,13 @@ import { db, auth } from '../Firebase/FireBase';
 import { collection, getDocs } from 'firebase/firestore';
 import Header from './components/header';
 import Footer from './components/Footer';
+import { useNavigate } from "react-router-dom"; 
 
 export default function Destinos() {
   const [rutas, setRutas] = useState([]);
   const [selectedRuta, setSelectedRuta] = useState(null);
   const [user, setUser] = useState(null);
+  const navigate = useNavigate();
 
   // Verificar estado de autenticación
   useEffect(() => {
@@ -31,16 +33,18 @@ export default function Destinos() {
   }, []);
 
   const handleLoginRedirect = () => {
-    // Aquí debes implementar tu lógica de redirección a login
-    // Ejemplo con react-router: navigate('/login')
-    // O abrir modal de login: document.getElementById('login-modal').showModal()
+    
     console.log('Redirigir a login');
+  }; 
+
+  const goToReseñas = () => {
+    navigate("/reseñas"); // Redirige a la página de reseñas
   };
 
   return (
     <div className="min-h-screen">
       <Header />
-
+      
       <div className="container mx-auto px-4 py-12">
         <h1 className="text-4xl font-bold text-gray-800 mb-8 text-center">Destinos</h1>
 
@@ -54,6 +58,25 @@ export default function Destinos() {
             />
           ))}
         </div>
+
+        {user && (
+          <div className="mt-8 text-center">
+            <button
+              onClick={goToReseñas}
+              className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition-colors"
+            >
+              Ir a Reseñas
+            </button>
+          </div>
+        )}
+
+        {!user && (
+          <div className="mt-8 text-center">
+            <p className="text-gray-600">
+              Inicia sesión para acceder a las reseñas.
+            </p>
+          </div>
+        )}
 
         {selectedRuta && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">

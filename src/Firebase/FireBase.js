@@ -25,3 +25,4 @@ const db = getFirestore(app);
 
 export { auth }; // Exporta auth para usarlo en otros componentes
 export { db };
+export default db; //
