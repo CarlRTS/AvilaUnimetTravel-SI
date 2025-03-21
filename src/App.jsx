@@ -17,7 +17,9 @@ import EditPerfile from './Vistas/EditPerfile';
 import { MisReservas } from './Vistas/MisDestinos';
 import GestionRutas from './Vistas/GestionRutas';
 import Informacion from './Vistas/Informarcion';
-import searchbar from './Vistas/components/searchbar';
+import Galeria from './Vistas/Galeria';
+import Reseñas from './Vistas/Reseñas';
+
 
 
 // Componente para rutas protegidas
@@ -40,6 +42,15 @@ export default function App() {
           
           {/* Rutas públicas */}
           <Route path="/registrar" element={<Registro />} />
+
+
+=======
+          {/* Ruta de Galeria (pública) */}
+          <Route path="/galeria" element={<Galeria />} />
+
+          {/* Ruta Reseñas */}
+          <Route path="/reseñas" element={<Reseñas />} />
+
 
           {/* Rutas protegidas */}
           <Route path="/mi-perfil" element={

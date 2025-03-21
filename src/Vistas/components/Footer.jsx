@@ -1,4 +1,7 @@
 import React from 'react';
+import { Link } from "react-router-dom"; // Importa Link para la navegación
+
+
 
 
 const Footer = () => (
@@ -52,6 +55,7 @@ const Footer = () => (
           ¡Descubre más sobre nosotros!
 
         </a>
+        
 
       </div>
 

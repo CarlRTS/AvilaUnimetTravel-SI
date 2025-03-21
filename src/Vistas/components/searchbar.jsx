@@ -18,6 +18,7 @@ const SearchBar = ({ temp, onSearch }) => {
         temp={temp}
         value={searchTerm}
         onChange={handleInputChange}
+        input
       />
       <button onClick={handleSearch}>
        Buscar

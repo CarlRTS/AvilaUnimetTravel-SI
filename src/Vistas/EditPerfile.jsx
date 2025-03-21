@@ -1,40 +1,91 @@
-import React, { useState} from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from './AuthContext';
 import { updateProfile } from 'firebase/auth';
 import { doc, updateDoc } from 'firebase/firestore';
-import { db } from '../Firebase/FireBase'; // Asegúrate de importar tu configuración de Firebase
+import { db } from '../Firebase/FireBase';
+import { uploadImage } from "../Firebase/SupabaseClient";
 import Header from './components/header';
 
 export default function EditarPerfil() {
-  const { currentUser } = useAuth();
+  const { currentUser, reloadUser } = useAuth();
   const navigate = useNavigate();
-  const [nombre, setNombre] = useState(currentUser?.displayName || '');
-  const [fotoURL, setFotoURL] = useState(currentUser?.photoURL || '');
+  const [nombre, setNombre] = useState('');
+  const [fotoURL, setFotoURL] = useState('');
   const [mensaje, setMensaje] = useState('');
+  const [file, setFile] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Función para actualizar el perfil
+  useEffect(() => {
+    if (!currentUser) {
+      navigate('/login');
+      return;
+    }
+    
+    setNombre(currentUser.displayName || '');
+    setFotoURL(currentUser.photoURL || '');
+  }, [currentUser, navigate]);
+
   const handleGuardarCambios = async (e) => {
     e.preventDefault();
+    if (isSubmitting || !currentUser) return;
+    
+    setIsSubmitting(true);
+
     try {
-      // Actualizar el perfil en Firebase Auth
-      await updateProfile(currentUser, {
+      let newFotoURL = fotoURL;
+
+      if (file) {
+        newFotoURL = await uploadImage(
+          file,
+          'profileimages',
+          `users/${currentUser.uid}/perfil`
+        );
+      }
+
+      // Obtener usuario actualizado después de reload
+      const updatedUser = await reloadUser();
+      
+      // Usar el usuario actualizado para todas las operaciones
+      await updatedUser.getIdToken(true);
+      
+      await updateProfile(updatedUser, {
         displayName: nombre,
-        photoURL: fotoURL,
+        photoURL: newFotoURL,
       });
 
-      // Actualizar el perfil en Firestore (si es necesario)
-      const userDoc = doc(db, 'users', currentUser.uid);
+      const userDoc = doc(db, 'users', updatedUser.uid);
       await updateDoc(userDoc, {
         displayName: nombre,
-        photoURL: fotoURL,
+        photoURL: newFotoURL,
       });
 
-      setMensaje('Perfil actualizado correctamente.');
-      setTimeout(() => navigate('/mi-perfil'), 2000); // Redirigir después de 2 segundos
+      // Forzar actualización del contexto
+      await reloadUser();
+      
+      // Resetear estados
+      setMensaje('¡Cambios guardados correctamente!');
+      setFile(null);
+      setTimeout(() => navigate('/mi-perfil'), 1500);
     } catch (error) {
-      setMensaje('Error al actualizar el perfil: ' + error.message);
+      setMensaje(`Error: ${error.message}`);
+      console.error('Error detallado:', error);
+    } finally {
+      setIsSubmitting(false);
     }
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      setMensaje('Solo se permiten archivos de imagen');
+      return;
+    }
+
+    setFile(file);
+    setFotoURL(URL.createObjectURL(file));
   };
 
   return (
@@ -44,7 +95,6 @@ export default function EditarPerfil() {
         <h1 className="text-white text-4xl font-bold mb-8">Editar Perfil</h1>
         <form onSubmit={handleGuardarCambios} className="bg-white p-8 rounded-xl shadow-2xl">
           <div className="space-y-6">
-            {/* Campo para el nombre */}
             <div>
               <label className="block text-gray-700 text-lg font-medium mb-2">
                 Nombre
@@ -54,42 +104,42 @@ export default function EditarPerfil() {
                 value={nombre}
                 onChange={(e) => setNombre(e.target.value)}
                 className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-300"
-                placeholder="Ingresa tu nombre"
+                placeholder="Tu nombre"
                 required
               />
             </div>
 
-            {/* Campo para la foto de perfil */}
             <div>
               <label className="block text-gray-700 text-lg font-medium mb-2">
-                Foto de Perfil (URL)
+                Foto de Perfil
               </label>
-              <input
-                type="url"
-                value={fotoURL}
-                onChange={(e) => setFotoURL(e.target.value)}
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-300"
-                placeholder="Ingresa la URL de tu foto"
-              />
-              {fotoURL && (
-                <div className="mt-4">
+              <div className="flex items-center gap-4">
+                <label className="cursor-pointer inline-block px-4 py-2 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition-colors">
+                  <span>Seleccionar imagen</span>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleFileChange}
+                    className="hidden"
+                  />
+                </label>
+                {fotoURL && (
                   <img
                     src={fotoURL}
-                    alt="Vista previa de la foto de perfil"
-                    className="w-24 h-24 rounded-full object-cover border-2 border-gray-200"
+                    alt="Vista previa"
+                    className="w-16 h-16 rounded-full object-cover border-2 border-gray-200"
                   />
-                </div>
-              )}
+                )}
+              </div>
+              <p className="text-sm text-gray-500 mt-2">Formatos soportados: JPG, PNG, GIF</p>
             </div>
 
-            {/* Mensaje de estado */}
             {mensaje && (
-              <div className="mt-4 p-4 rounded-lg bg-blue-100 text-blue-700">
+              <div className={`p-4 rounded-lg ${mensaje.startsWith('¡') ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
                 {mensaje}
               </div>
             )}
 
-            {/* Botones */}
             <div className="flex justify-end gap-4">
               <button
                 type="button"
@@ -100,9 +150,10 @@ export default function EditarPerfil() {
               </button>
               <button
                 type="submit"
-                className="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition-all duration-300"
+                disabled={isSubmitting}
+                className="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition-all duration-300 disabled:opacity-50"
               >
-                Guardar Cambios
+                {isSubmitting ? 'Guardando...' : 'Guardar Cambios'}
               </button>
             </div>
           </div>

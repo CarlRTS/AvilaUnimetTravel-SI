@@ -10,50 +10,86 @@ export const AuthProvider = ({ children }) => {
   const [userRole, setUserRole] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Crear/actualizar usuario en Firestore
+  // Función mejorada para recargar usuario
+  const reloadUser = async () => {
+    if (!auth.currentUser) return null;
+    
+    try {
+      await auth.currentUser.reload();
+      const updatedUser = auth.currentUser;
+      
+      // Actualizar estado local
+      setCurrentUser({ ...updatedUser });
+      
+      // Actualizar datos en Firestore si es necesario
+      await handleUserDocument(updatedUser);
+      
+      return updatedUser;
+    } catch (error) {
+      console.error("Error recargando usuario:", error);
+      return null;
+    }
+  };
+
   const handleUserDocument = async (user) => {
     const userDocRef = doc(db, 'users', user.uid);
-    const userDoc = await getDoc(userDocRef);
-
-    if (!userDoc.exists()) {
-      await setDoc(userDocRef, {
-        email: user.email,
-        role: 'user', // Rol por defecto
-        createdAt: new Date(),
-      });
+    
+    try {
+      const userDoc = await getDoc(userDocRef);
+      
+      if (!userDoc.exists()) {
+        await setDoc(userDocRef, {
+          email: user.email,
+          role: 'user',
+          createdAt: new Date(),
+        });
+      }
+      
+      const updatedDoc = await getDoc(userDocRef);
+      setUserRole(updatedDoc.data()?.role || 'user');
+      
+    } catch (error) {
+      console.error("Error manejando documento de usuario:", error);
     }
-
-    // Obtener rol actualizado
-    const updatedDoc = await getDoc(userDocRef);
-    setUserRole(updatedDoc.data()?.role || 'user');
   };
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
-      if (user) {
-        await handleUserDocument(user);
-
-        // Asignar nombre y foto predeterminados si es necesario
-        if (user.providerData[0]?.providerId === 'password' && !user.displayName) {
-          await updateProfile(user, {
-            displayName: user.email.split('@')[0],
-            photoURL: "https://tu-url-de-imagen-predeterminada.jpg"
-          });
+      try {
+        if (user) {
+          // Verificar y actualizar perfil si es necesario
+          if (user.providerData[0]?.providerId === 'password' && !user.displayName) {
+            await updateProfile(user, {
+              displayName: user.email.split('@')[0],
+              photoURL: "https://tu-url-de-imagen-predeterminada.jpg"
+            });
+            await reloadUser(); // Forzar recarga después de actualización
+          }
+          
+          await handleUserDocument(user);
+          setCurrentUser(user);
+        } else {
+          setCurrentUser(null);
+          setUserRole(null);
         }
-
-        setCurrentUser(user);
-      } else {
-        setCurrentUser(null);
-        setUserRole(null);
+      } catch (error) {
+        console.error("Error en observer de autenticación:", error);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     });
 
     return unsubscribe;
   }, []);
 
   const logout = async () => {
-    await signOut(auth);
+    try {
+      await signOut(auth);
+      setCurrentUser(null);
+      setUserRole(null);
+    } catch (error) {
+      console.error("Error haciendo logout:", error);
+    }
   };
 
   return (
@@ -61,7 +97,8 @@ export const AuthProvider = ({ children }) => {
       currentUser, 
       userRole, 
       loading, 
-      logout 
+      logout,
+      reloadUser 
     }}>
       {children}
     </AuthContext.Provider>
